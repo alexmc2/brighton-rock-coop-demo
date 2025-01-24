@@ -18,7 +18,7 @@ export async function getGardenImages() {
   try {
     const result = await cloudinary.api.resources({
       type: 'upload',
-      prefix: 'garden-images/', // Separate folder for garden images
+      prefix: 'garden-images-demo/', // Separate folder for garden images
       max_results: 500,
       direction: 'desc',
       sort_by: 'created_at',
@@ -84,7 +84,7 @@ export async function uploadGardenImage(
     return new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
-          folder: 'garden-images',
+          folder: 'garden-images-demo',
           resource_type: 'auto',
           format: 'webp',
           quality: 'auto',
@@ -103,7 +103,7 @@ export async function uploadGardenImage(
               public_id: result!.public_id,
               secure_url: result!.secure_url,
               created_at: new Date().toISOString(),
-              width: result!.width,
+              width: result!.width, 
               height: result!.height,
             });
           }

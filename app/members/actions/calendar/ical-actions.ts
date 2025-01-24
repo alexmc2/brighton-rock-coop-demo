@@ -51,7 +51,9 @@ export async function generateCalendarIcal(secretKey: string) {
     name: 'Brighton Rock Co-op Calendar',
     timezone: 'Europe/London',
     prodId: { company: 'brighton-rock', product: 'calendar' },
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.brighton-rock.org',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      'https://brighton-rock-coop-demo.vercel.app',
   });
 
   events?.forEach((event) => {
@@ -73,5 +75,5 @@ export async function generateCalendarIcal(secretKey: string) {
 }
 
 export async function getCalendarUrl() {
-  return `https://www.brighton-rock.org/members/api/calendar?key=${process.env.SECRET_CALENDAR_KEY}`;
+  return `https://brighton-rock-coop-demo.vercel.app/members/api/calendar?key=${process.env.SECRET_CALENDAR_KEY}`;
 }
