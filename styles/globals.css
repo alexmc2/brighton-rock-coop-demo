@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 215 15% 40%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 175 90% 35%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: var(--primary);
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 215 28% 17%;
+    --foreground: 200 1% 90%;
+
+    --card: 215 28% 22%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 215 28% 22%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 200 90% 28%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 215 28% 25%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 215 28% 25%;
+    --muted-foreground: 217 24% 65%;
+
+    --accent: 201 96% 32%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 28% 25%;
+    --input: 215 28% 25%;
+    --ring: 201 96% 32%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+/* Narrow scrollbar styles */
+html ::-webkit-scrollbar {
+  width: 2px !important; /* Ensures it's set to 2px */
+  height: 2px !important; /* For horizontal scrollbars */
+}
+
+html ::-webkit-scrollbar-track {
+  background: var(--primary) !important; /* Matches theme background */
+}
+
+html ::-webkit-scrollbar-thumb {
+  background-color: var(--primary) !important; /* Matches theme foreground */
+  border-radius: 2px !important;
+  border: 1px solid var(--primary) !important; /* Spacing around the thumb */
+}
+
+html {
+  scrollbar-width: thin; /* Narrow scrollbar for Firefox */
+  scrollbar-color: var(--primary) var(--primary) !important; /* Thumb and track colors */
+}
+
+* {
+  @apply border-border;
+}
+
+/* Base styles */
+.dark-mode-image {
+  /* Adjusts the filter to modify the image */
+  filter: brightness(0.8) saturate(1.2);
+  /* Blends the image with the background */
+  mix-blend-mode: multiply;
+}
+
+/* Adjust for dark mode */
+.dark .dark-mode-image {
+  /* Specific adjustments for dark mode */
+  filter: brightness(1.2) saturate(1.5);
+  mix-blend-mode: lighten;
+}
+
+section {
+  border: none;
+}
+
+/* styles/globals.css or your existing CSS file */
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content {
+  animation: modalAppear 5s ease-out forwards;
+}
