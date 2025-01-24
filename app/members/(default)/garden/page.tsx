@@ -31,7 +31,7 @@ interface PageProps {
 }
 
 export default async function GardenPage({ searchParams }: PageProps) {
-  const tab = (searchParams.tab as string) || 'jobs';
+  const tab = (searchParams.tab as string) || 'projects';
   const [tasks, projects] = await Promise.all([
     getGardenTasks(),
     getGardenProjects(),
@@ -43,22 +43,22 @@ export default async function GardenPage({ searchParams }: PageProps) {
 
       <Tabs value={tab} className="space-y-6">
         <TabsList>
-          <TabsTrigger value="jobs" asChild>
-            <Link href="/members/garden?tab=jobs">Garden Jobs</Link>
-          </TabsTrigger>
           <TabsTrigger value="projects" asChild>
             <Link href="/members/garden?tab=projects">Projects & Planning</Link>
           </TabsTrigger>
+          <TabsTrigger value="jobs" asChild>
+            <Link href="/members/garden?tab=jobs">Garden Jobs</Link>
+          </TabsTrigger>
         </TabsList>
-
-        <TabsContent value="jobs" className="space-y-6">
-          <GardenTaskList tasks={tasks} />
-        </TabsContent>
 
         <TabsContent value="projects" className="space-y-6">
           <GardenProjectList
             projects={projects as GardenProjectWithDetails[]}
           />
+        </TabsContent>
+
+        <TabsContent value="jobs" className="space-y-6">
+          <GardenTaskList tasks={tasks} />
         </TabsContent>
       </Tabs>
     </div>

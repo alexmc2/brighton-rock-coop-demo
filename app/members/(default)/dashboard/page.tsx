@@ -77,7 +77,7 @@ const roles = [
   },
   {
     name: 'Garden',
-    href: '/members/garden',
+    href: '/members/garden?tab=projects',
     description: 'Coordinate garden maintenance and projects',
     icon: (
       <svg
