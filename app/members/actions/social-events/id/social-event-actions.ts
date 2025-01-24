@@ -30,7 +30,7 @@ export async function updateSocialEvent(data: UpdateSocialEventData) {
     if (!user) throw new Error('User not authenticated');
 
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('full_name')
       .eq('id', user.id)
       .single();
@@ -55,7 +55,7 @@ export async function updateSocialEvent(data: UpdateSocialEventData) {
 
     // Update social event
     const { error: updateError } = await supabase
-      .from('social_events')
+      .from('demo_social_events')
       .update(updateData)
       .eq('id', data.id);
 
@@ -65,7 +65,7 @@ export async function updateSocialEvent(data: UpdateSocialEventData) {
     if (data.event_date) {
       // Delete existing calendar event
       await supabase
-        .from('calendar_events')
+        .from('demo_calendar_events')
         .delete()
         .eq('reference_id', data.id)
         .eq('event_type', 'social_event');
@@ -78,7 +78,7 @@ export async function updateSocialEvent(data: UpdateSocialEventData) {
           `${data.event_date}T${data.start_time || '00:00'}`
         ),
         end_time: new Date(`${data.event_date}T${data.start_time || '00:00'}`),
-        event_type: 'social_event' as const,
+        event_type: 'demo_social_event' as const,
         reference_id: data.id,
         created_by: user.id,
         category: 'Co-op Social',
@@ -87,31 +87,31 @@ export async function updateSocialEvent(data: UpdateSocialEventData) {
       };
 
       await supabase
-        .from('calendar_events')
+        .from('demo_calendar_events')
         .insert(calendarData)
         .throwOnError();
     }
 
     // Fetch updated event data
     const { data: updatedEvent, error: fetchError } = await supabase
-      .from('social_events')
+      .from('demo_social_events')
       .select(
         `
         *,
-        created_by_user:profiles!social_events_created_by_fkey (
+        created_by_user:demo_profiles!demo_social_events_created_by_fkey (
           email,
           full_name
         ),
-        comments:social_event_comments (
+        comments:demo_social_event_comments (
           *,
-          user:profiles (
+          user:demo_profiles (
             email,
             full_name
           )
         ),
-        participants:social_event_participants (
+        participants:demo_social_event_participants (
           *,
-          user:profiles (
+          user:demo_profiles (
             id,
             email,
             full_name
@@ -142,7 +142,7 @@ export async function deleteSocialEvent(eventId: string) {
   try {
     // Delete associated calendar events first
     await supabase
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .delete()
       .eq('reference_id', eventId)
       .eq('event_type', 'social_event')

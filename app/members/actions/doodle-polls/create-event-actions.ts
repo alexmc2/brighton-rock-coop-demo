@@ -30,7 +30,7 @@ export async function createEventFromPoll({
     if (!user) throw new Error('Not authenticated');
 
     const { data: profile, error: profileError } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('full_name')
       .eq('id', user.id)
       .single();
@@ -66,7 +66,7 @@ export async function createEventFromPoll({
     if (poll.event_type === 'social_event') {
       // Create a social event
       const { data: socialEvent, error: socialEventError } = await supabase
-        .from('social_events')
+        .from('demo_social_events')
         .insert({
           title: poll.title,
           description: poll.description,
@@ -100,7 +100,7 @@ export async function createEventFromPoll({
 
       if (participantsToCreate.length > 0) {
         const { error: participantsError } = await supabase
-          .from('social_event_participants')
+          .from('demo_social_event_participants')
           .insert(participantsToCreate);
         if (participantsError) {
           console.error('Participant creation error:', participantsError);
@@ -110,7 +110,7 @@ export async function createEventFromPoll({
     } else if (poll.event_type === 'development_event') {
       // Create development event
       const { data: devEvent, error: devEventError } = await supabase
-        .from('development_initiatives')
+        .from('demo_development_initiatives')
         .insert({
           title: poll.title,
           description: poll.description,
@@ -155,7 +155,7 @@ export async function createEventFromPoll({
         // Insert participants one by one to handle RLS policies
         for (const participant of participantsToCreate) {
           const { error: participantError } = await supabase
-            .from('event_participants')
+            .from('demo_event_participants')
             .insert(participant);
 
           if (participantError) {
@@ -188,7 +188,7 @@ export async function createEventFromPoll({
     };
 
     const { error: calendarError } = await supabase
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .insert(calendarData);
 
     if (calendarError) {
@@ -204,7 +204,7 @@ export async function createEventFromPoll({
     };
 
     const { error: pollError } = await supabase
-      .from('doodle_polls')
+      .from('demo_doodle_polls')
       .update(pollUpdateData)
       .eq('id', poll.id);
 

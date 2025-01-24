@@ -35,7 +35,7 @@ export async function updateProject({
   try {
     // First get the current project to check if we need to delete an old image
     const { data: currentProject } = await supabase
-      .from('garden_projects')
+      .from('demo_garden_projects')
       .select('main_image_public_id')
       .eq('id', projectId)
       .single();
@@ -47,7 +47,7 @@ export async function updateProject({
 
     // Update the project
     const { data: project, error: updateError } = await supabase
-      .from('garden_projects')
+      .from('demo_garden_projects')
       .update({
         title,
         description,
@@ -78,7 +78,7 @@ export async function deleteProject(projectId: string) {
   try {
     // First get the project to get the main image public_id if it exists
     const { data: project } = await supabase
-      .from('garden_projects')
+      .from('demo_garden_projects')
       .select('main_image_public_id')
       .eq('id', projectId)
       .single();
@@ -90,7 +90,7 @@ export async function deleteProject(projectId: string) {
 
     // Delete the project (this will cascade delete gallery images)
     const { error: deleteError } = await supabase
-      .from('garden_projects')
+      .from('demo_garden_projects')
       .delete()
       .eq('id', projectId);
 

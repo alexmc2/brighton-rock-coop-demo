@@ -10,7 +10,7 @@ export async function getCalendarEvents(
   const supabase = createClientComponentClient();
 
   const { data: events, error } = await supabase
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .select(
       `
       *,

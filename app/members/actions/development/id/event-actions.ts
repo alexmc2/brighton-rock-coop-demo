@@ -34,7 +34,7 @@ export async function updateDevelopmentEvent(data: UpdateDevelopmentEventData) {
 
     // Get user's profile
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('full_name')
       .eq('id', user.id)
       .single();
@@ -57,7 +57,7 @@ export async function updateDevelopmentEvent(data: UpdateDevelopmentEventData) {
 
     // Update development initiative
     const { error: updateError } = await supabase
-      .from('development_initiatives')
+      .from('demo_development_initiatives')
       .update(updateData)
       .eq('id', data.id);
 
@@ -67,7 +67,7 @@ export async function updateDevelopmentEvent(data: UpdateDevelopmentEventData) {
     if (data.event_date) {
       // Delete existing calendar event
       await supabase
-        .from('calendar_events')
+        .from('demo_calendar_events')
         .delete()
         .eq('reference_id', data.id)
         .eq('event_type', 'development_event');
@@ -89,31 +89,31 @@ export async function updateDevelopmentEvent(data: UpdateDevelopmentEventData) {
       };
 
       await supabase
-        .from('calendar_events')
+        .from('demo_calendar_events')
         .insert(calendarData)
         .throwOnError();
     }
 
     // Fetch updated initiative data
     const { data: updatedInitiative, error: fetchError } = await supabase
-      .from('development_initiatives')
+      .from('demo_development_initiatives')
       .select(
         `
         *,
-        created_by_user:profiles!development_initiatives_created_by_fkey (
+        created_by_user:demo_profiles!demo_development_initiatives_created_by_fkey (
           email,
           full_name
         ),
-        comments:development_comments (
+        comments:demo_development_comments (
           *,
-          user:profiles (
+          user:demo_profiles (
             email,
             full_name
           )
         ),
-        participants:event_participants (
+        participants:demo_event_participants (
           *,
-          user:profiles (
+          user:demo_profiles (
             id,
             email,
             full_name
@@ -148,7 +148,7 @@ export async function deleteDevelopmentEvent(eventId: string) {
   try {
     // Delete associated calendar events first
     await supabase
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .delete()
       .eq('reference_id', eventId)
       .eq('event_type', 'development_event')

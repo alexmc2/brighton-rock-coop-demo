@@ -9,7 +9,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export async function getUsers() {
   const { data: users, error } = await supabaseAdmin
-    .from('profiles')
+    .from('demo_profiles')
     .select('id, email, full_name')
     .order('full_name');
 
@@ -30,7 +30,7 @@ export async function updateMaintenanceRequest(
 ) {
   try {
     const { error: updateError } = await supabaseAdmin
-      .from('maintenance_requests')
+      .from('demo_maintenance_requests')
       .update(updates)
       .eq('id', requestId);
 
@@ -54,7 +54,7 @@ export async function getUserProfile() {
   if (userError || !user) throw new Error('User not authenticated');
 
   const { data: profile, error: profileError } = await supabase
-    .from('profiles')
+    .from('demo_profiles')
     .select('email, full_name')
     .eq('id', user.id)
     .single();
@@ -88,7 +88,7 @@ export async function updateMaintenanceVisit(
 
     // Update the visit
     const { error: updateError } = await supabaseAdmin
-      .from('maintenance_visits')
+      .from('demo_maintenance_visits')
       .update({
         scheduled_date: scheduledDate,
         estimated_duration: estimatedDuration,
@@ -105,14 +105,14 @@ export async function updateMaintenanceVisit(
 
     // First delete existing calendar event
     await supabaseAdmin
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .delete()
       .eq('reference_id', visitId)
       .eq('event_type', 'maintenance_visit');
 
     // Create new calendar event
     const { error: calendarError } = await supabaseAdmin
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .insert({
         title: requestTitle,
         description: `Maintenance visit for: ${requestTitle}${notes ? `\nNotes: ${notes}` : ''}`,
@@ -138,14 +138,14 @@ export async function deleteMaintenanceVisit(visitId: string) {
   try {
     // Delete associated calendar events first
     await supabaseAdmin
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .delete()
       .eq('reference_id', visitId)
       .eq('event_type', 'maintenance_visit');
 
     // Delete the visit
     const { error } = await supabaseAdmin
-      .from('maintenance_visits')
+      .from('demo_maintenance_visits')
       .delete()
       .eq('id', visitId);
 

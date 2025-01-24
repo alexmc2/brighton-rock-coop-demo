@@ -24,7 +24,7 @@ export async function getUserAndParticipationStatus(initiativeId: string) {
     if (!user) throw new Error('Not authenticated');
 
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('id, email, full_name')
       .eq('id', user.id)
       .single();
@@ -33,7 +33,7 @@ export async function getUserAndParticipationStatus(initiativeId: string) {
 
     // Get user's participation status for this event/initiative
     const { data: participation } = await supabase
-      .from('event_participants')
+      .from('demo_event_participants')
       .select('status')
       .eq('event_id', initiativeId)
       .eq('user_id', user.id)
@@ -60,7 +60,7 @@ export async function getInitiativeParticipants(initiativeId: string) {
 
   try {
     const { data, error } = await supabase
-      .from('event_participants')
+      .from('demo_event_participants')
       .select(
         `
         event_id,
@@ -68,7 +68,7 @@ export async function getInitiativeParticipants(initiativeId: string) {
         status,
         created_at,
         updated_at,
-        user:profiles!event_participants_user_id_fkey (
+        user:demo_profiles!demo_event_participants_user_id_fkey (
           email,
           full_name
         )
@@ -101,13 +101,13 @@ export async function updateParticipationStatus(
     if (newStatus === null) {
       // Delete participation
       await supabase
-        .from('event_participants')
+        .from('demo_event_participants')
         .delete()
         .eq('event_id', initiativeId)
         .eq('user_id', userId);
     } else {
       // Upsert participation
-      await supabase.from('event_participants').upsert({
+      await supabase.from('demo_event_participants').upsert({
         event_id: initiativeId,
         user_id: userId,
         status: newStatus,

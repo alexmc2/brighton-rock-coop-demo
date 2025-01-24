@@ -14,16 +14,16 @@ import supabaseAdmin from '@/lib/members/supabaseAdmin';
 export async function getTodo(id: string) {
   try {
     const { data: todo, error } = await supabaseAdmin
-      .from('todos')
+      .from('demo_todos')
       .select(
         `
         *,
-        created_by_user:profiles!todos_created_by_fkey(email, full_name),
-        assigned_to_user:profiles!todos_assigned_to_fkey(email, full_name),
-        last_modified_by_user:profiles!todos_last_modified_by_fkey(email, full_name),
-        comments:todo_comments(
+        created_by_user:demo_profiles!demo_todos_created_by_fkey(email, full_name),
+        assigned_to_user:demo_profiles!demo_todos_assigned_to_fkey(email, full_name),
+        last_modified_by_user:demo_profiles!demo_todos_last_modified_by_fkey(email, full_name),
+        comments:demo_todo_comments(
           *,
-          user:profiles!todo_comments_created_by_fkey(
+          user:demo_profiles!demo_todo_comments_created_by_fkey(
             email,
             full_name
           )
@@ -75,7 +75,7 @@ export async function updateTodo(data: UpdateTodoData) {
 
     // Update Todo in Supabase
     const { data: updatedTodo, error: updateError } = await supabase
-      .from('todos')
+      .from('demo_todos')
       .update({
         title: data.title.trim(),
         description: data.description.trim() || null,
@@ -89,15 +89,15 @@ export async function updateTodo(data: UpdateTodoData) {
       .select(
         `
         *,
-        created_by_user:profiles!todos_created_by_fkey(
+        created_by_user:demo_profiles!demo_todos_created_by_fkey(
           email,
           full_name
         ),
-        assigned_to_user:profiles!todos_assigned_to_fkey(
+        assigned_to_user:demo_profiles!demo_todos_assigned_to_fkey(
           email,
           full_name
         ),
-        last_modified_by_user:profiles!todos_last_modified_by_fkey(
+        last_modified_by_user:demo_profiles!demo_todos_last_modified_by_fkey(
           email,
           full_name
         )
@@ -127,7 +127,7 @@ export async function deleteTodo(id: string) {
   try {
     // Delete todo (comments will be cascade deleted)
     const { error: deleteError } = await supabase
-      .from('todos')
+      .from('demo_todos')
       .delete()
       .eq('id', id);
 

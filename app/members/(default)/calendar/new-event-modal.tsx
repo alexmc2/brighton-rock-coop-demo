@@ -74,7 +74,7 @@ export default function NewEventModal() {
 
       // Get the user's profile to get their full name
       const { data: profile } = await supabase
-        .from('profiles')
+        .from('demo_profiles')
         .select('full_name')
         .eq('id', user.id)
         .single();

@@ -14,25 +14,25 @@ export async function getGardenTasks() {
     const supabase = createServerComponentClient({ cookies });
 
     const { data: tasks, error } = await supabase
-      .from('garden_tasks')
+      .from('demo_garden_tasks')
       .select(
         `
         *,
-        area:garden_areas(id, name),
-        comments:garden_comments(*),
-        participants:garden_task_participants(
+        area:demo_garden_areas(id, name),
+        comments:demo_garden_comments(*),
+        participants:demo_garden_task_participants(
           *,
-          user:profiles(email, full_name)
+          user:demo_profiles(email, full_name)
         ),
-        created_by_user:profiles!garden_tasks_created_by_fkey(email, full_name),
-        images:garden_images(
+        created_by_user:demo_profiles!demo_garden_tasks_created_by_fkey(email, full_name),
+        images:demo_garden_images(
           id,
           public_id,
           secure_url,
           caption,
           created_at,
           uploaded_by,
-          user:profiles!garden_images_uploaded_by_fkey(email, full_name)
+          user:demo_profiles!demo_garden_images_uploaded_by_fkey(email, full_name)
         )
       `
       )
@@ -51,32 +51,32 @@ export async function getGardenProjects() {
   const supabase = createServerComponentClient({ cookies });
 
   const { data: projects, error } = await supabase
-    .from('garden_projects')
+    .from('demo_garden_projects')
     .select(
       `
       *,
-      area:garden_areas(
+      area:demo_garden_areas(
         id,
         name,
         description
       ),
-      images:garden_images(
+      images:demo_garden_images(
         id,
         public_id,
         secure_url,
         caption,
         created_at
       ),
-      comments:garden_comments(id),
-      participants:garden_project_participants(
+      comments:demo_garden_comments(id),
+      participants:demo_garden_project_participants(
         *,
-        user:profiles(
+        user:demo_profiles(
           id,
           email,
           full_name
         )
       ),
-      created_by_user:profiles!garden_projects_created_by_fkey(
+      created_by_user:demo_profiles!demo_garden_projects_created_by_fkey(
         id,
         email,
         full_name
@@ -98,16 +98,16 @@ export async function getGardenAreas(): Promise<GardenAreaWithDetails[]> {
     const supabase = createServerComponentClient({ cookies });
 
     const { data: areas, error } = await supabase
-      .from('garden_areas')
+      .from('demo_garden_areas')
       .select(
         `
         *,
-        tasks:garden_tasks(
+        tasks:demo_garden_tasks(
           *,
-          comments:garden_comments(*),
-          participants:garden_task_participants(
+          comments:demo_garden_comments(*),
+          participants:demo_garden_task_participants(
             *,
-            user:profiles(email, full_name)
+            user:demo_profiles(email, full_name)
           )
         )
       `
@@ -132,7 +132,7 @@ export async function updateGardenAreaStatus(
   const supabase = supabaseAdmin;
 
   const { error } = await supabase
-    .from('garden_areas')
+    .from('demo_garden_areas')
     .update({
       status,
       last_modified_by: userId,

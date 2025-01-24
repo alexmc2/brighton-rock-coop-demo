@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function getGardenAreas() {
   const { data, error } = await supabaseAdmin
-    .from('garden_areas')
+    .from('demo_garden_areas')
     .select('id, name')
     .order('name');
 
@@ -47,7 +47,7 @@ export async function createGardenTask({
   try {
     // Get user's profile
     const { data: profile, error: profileError } = await supabaseAdmin
-      .from('profiles')
+      .from('demo_profiles')
       .select('email, full_name')
       .eq('id', userId)
       .single();
@@ -62,7 +62,7 @@ export async function createGardenTask({
 
     // Insert garden task
     const { data: newTask, error: insertError } = await supabaseAdmin
-      .from('garden_tasks')
+      .from('demo_garden_tasks')
       .insert({
         title,
         description,

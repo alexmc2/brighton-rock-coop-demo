@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function getGardenAreas() {
   const { data, error } = await supabaseAdmin
-    .from('garden_areas')
+    .from('demo_garden_areas')
     .select('id, name')
     .order('name');
 
@@ -49,7 +49,7 @@ export async function updateGardenTask({
   try {
     // Get user's profile
     const { data: profile, error: profileError } = await supabaseAdmin
-      .from('profiles')
+      .from('demo_profiles')
       .select('full_name')
       .eq('id', userId)
       .single();
@@ -65,7 +65,7 @@ export async function updateGardenTask({
 
     // Update garden task
     const { data: updatedTask, error: updateError } = await supabaseAdmin
-      .from('garden_tasks')
+      .from('demo_garden_tasks')
       .update({
         title,
         description,
@@ -98,7 +98,7 @@ export async function deleteGardenTask(taskId: string) {
   try {
     // First delete all comments
     const { error: commentsError } = await supabaseAdmin
-      .from('garden_comments')
+      .from('demo_garden_comments')
       .delete()
       .eq('task_id', taskId);
 
@@ -106,7 +106,7 @@ export async function deleteGardenTask(taskId: string) {
 
     // Then delete the task
     const { error: deleteError } = await supabaseAdmin
-      .from('garden_tasks')
+      .from('demo_garden_tasks')
       .delete()
       .eq('id', taskId);
 

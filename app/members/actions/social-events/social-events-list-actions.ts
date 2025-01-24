@@ -8,11 +8,11 @@ export async function getSocialEventParticipants(eventId: string) {
   const supabase = createServerComponentClient({ cookies });
 
   const { data: participants, error } = await supabase
-    .from('social_event_participants')
+    .from('demo_social_event_participants')
     .select(
       `
       *,
-      user:profiles(
+      user:demo_profiles(
         id,
         email,
         full_name
@@ -32,16 +32,16 @@ export async function getSocialEventParticipants(eventId: string) {
 export async function getSocialEvents() {
   const supabase = createServerComponentClient({ cookies });
 
-  const { data: events, error } = await supabase.from('social_events').select(`
+  const { data: events, error } = await supabase.from('demo_social_events').select(`
       *,
-      organizer:profiles!social_events_organizer_id_fkey(
+      organizer:profiles!demo_social_events_organizer_id_fkey(
         id,
         email,
         full_name
       ),
-      participants:social_event_participants(
+      participants:demo_social_event_participants(
         *,
-        user:profiles(
+        user:demo_profiles(
           id,
           email,
           full_name

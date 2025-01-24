@@ -41,7 +41,7 @@ export async function createDoodlePoll({
 
     // Create the poll
     const { data: poll, error: pollError } = await supabase
-      .from('doodle_polls')
+      .from('demo_doodle_polls')
       .insert({
         title: title.trim(),
         description: description.trim(),
@@ -70,7 +70,7 @@ export async function createDoodlePoll({
     }));
 
     const { error: optionsError } = await supabase
-      .from('doodle_poll_options')
+      .from('demo_doodle_poll_options')
       .insert(optionsToCreate);
 
     if (optionsError) throw optionsError;

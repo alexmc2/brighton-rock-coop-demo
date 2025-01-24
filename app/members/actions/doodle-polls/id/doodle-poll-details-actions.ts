@@ -39,7 +39,7 @@ export async function togglePollResponse({
     if (participantId) {
       // Update existing participant
       const { error: updateError } = await supabase
-        .from('doodle_poll_participants')
+        .from('demo_doodle_poll_participants')
         .update({
           responses: newResponses,
           updated_at: new Date().toISOString(),
@@ -50,7 +50,7 @@ export async function togglePollResponse({
     } else {
       // Create new participant
       const { error: insertError } = await supabase
-        .from('doodle_poll_participants')
+        .from('demo_doodle_poll_participants')
         .insert({
           poll_id: pollId,
           user_id: userId,

@@ -11,7 +11,7 @@ export async function updateCalendarEvent(
   const supabase = createClientComponentClient();
 
   const { data, error } = await supabase
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .update({ ...updates, last_modified_by: userId })
     .eq('id', eventId)
     .select()
@@ -28,7 +28,7 @@ export async function deleteCalendarEvent(eventId: string) {
   const supabase = createClientComponentClient();
 
   const { error } = await supabase
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .delete()
     .eq('id', eventId);
 

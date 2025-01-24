@@ -6,15 +6,15 @@ import supabaseAdmin from '@/lib/members/supabaseAdmin';
 export async function getMaintenanceRequests() {
   try {
     const { data: requests, error } = await supabaseAdmin
-      .from('maintenance_requests')
+      .from('demo_maintenance_requests')
       .select(
         `
         *,
-        house:houses!maintenance_requests_house_id_fkey(id, name),
-        reported_by_user:profiles!maintenance_requests_reported_by_fkey(email, full_name),
-        assigned_to_user:profiles!maintenance_requests_assigned_to_fkey(email, full_name),
-        visits:maintenance_visits(*),
-        comments:maintenance_comments(*)
+        house:houses!demo_maintenance_requests_house_id_fkey(id, name),
+        reported_by_user:demo_profiles!demo_maintenance_requests_reported_by_fkey(email, full_name),
+        assigned_to_user:demo_profiles!demo_maintenance_requests_assigned_to_fkey(email, full_name),
+        visits:demo_maintenance_visits(*),
+        comments:demo_maintenance_comments(*)
       `
       )
       .order('created_at', { ascending: false });
@@ -34,7 +34,7 @@ export async function getMaintenanceRequests() {
 export async function getHouses() {
   try {
     const { data: houses, error } = await supabaseAdmin
-      .from('houses')
+      .from('demo_houses')
       .select('id, name')
       .order('name');
 

@@ -37,7 +37,7 @@ export async function generateCalendarIcal(secretKey: string) {
   );
 
   const { data: events, error } = await supabase
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .select(
       `id, title, description, start_time, end_time, event_type, category`
     )

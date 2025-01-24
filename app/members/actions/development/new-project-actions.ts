@@ -38,7 +38,7 @@ export async function createDevelopmentProject(
     };
 
     const { error: insertError } = await supabase
-      .from('development_initiatives')
+      .from('demo_development_initiatives')
       .insert(projectData);
 
     if (insertError) throw insertError;

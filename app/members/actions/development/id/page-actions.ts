@@ -6,14 +6,14 @@ import { DevelopmentInitiativeWithDetails } from '@/types/members/development';
 export async function getInitiativeById(id: string) {
   try {
     const { data: initiative, error } = await supabaseAdmin
-      .from('development_initiatives')
+      .from('demo_development_initiatives')
       .select(
         `
         *,
-        created_by_user:profiles!development_initiatives_created_by_fkey(email, full_name),
-        comments:development_comments(
+        created_by_user:demo_profiles!demo_development_initiatives_created_by_fkey(email, full_name),
+        comments:demo_development_comments(
           *,
-          user:profiles!development_comments_user_id_fkey(
+          user:demo_profiles!demo_development_comments_user_id_fkey(
             email,
             full_name
           )

@@ -7,14 +7,14 @@ import { MaintenanceRequestWithDetails } from '@/types/members/maintenance';
 export async function getMaintenanceRequest(id: string) {
   try {
     const { data: request, error } = await supabaseAdmin
-      .from('maintenance_requests')
+      .from('demo_maintenance_requests')
       .select(
         `
         *,
-        house:houses!maintenance_requests_house_id_fkey(name),
-        reported_by_user:profiles!maintenance_requests_reported_by_fkey(email, full_name),
-        assigned_to_user:profiles!maintenance_requests_assigned_to_fkey(email, full_name),
-        visits:maintenance_visits(
+        house:houses!demo_maintenance_requests_house_id_fkey(name),
+        reported_by_user:demo_profiles!demo_maintenance_requests_reported_by_fkey(email, full_name),
+        assigned_to_user:demo_profiles!demo_maintenance_requests_assigned_to_fkey(email, full_name),
+        visits:demo_maintenance_visits(
           id,
           scheduled_date,
           estimated_duration,
@@ -22,12 +22,12 @@ export async function getMaintenanceRequest(id: string) {
           completed_at,
           created_at
         ),
-        comments:maintenance_comments(
+        comments:demo_maintenance_comments(
           id,
           comment,
           created_at,
           user_id,
-          user:profiles!maintenance_comments_user_id_fkey(
+          user:demo_profiles!demo_maintenance_comments_user_id_fkey(
             email,
             full_name
           )
@@ -62,7 +62,7 @@ export async function getMaintenanceRequest(id: string) {
 export async function getHouses() {
   try {
     const { data: houses, error } = await supabaseAdmin
-      .from('houses')
+      .from('demo_houses')
       .select('id, name')
       .order('name', { ascending: true });
 

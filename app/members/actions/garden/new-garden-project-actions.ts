@@ -35,7 +35,7 @@ export async function createNewProject(formData: FormData) {
 
     // Create project
     const { data: project, error: insertError } = await supabase
-      .from('garden_projects')
+      .from('demo_garden_projects')
       .insert({
         title,
         description,

@@ -38,7 +38,7 @@ export default function DropdownProfile({
 
         // Fetch the user's profile
         const { data: profile } = await supabase
-          .from('profiles')
+          .from('demo_profiles')
           .select('full_name')
           .eq('id', user.id)
           .single();

@@ -50,7 +50,7 @@ export async function uploadTaskImage(formData: FormData) {
 
     // Save to database
     const { data: insertedImage, error: dbError } = await supabase
-      .from('garden_images')
+      .from('demo_garden_images')
       .insert({
         public_id: cloudinaryResult.public_id,
         secure_url: cloudinaryResult.secure_url,
@@ -83,7 +83,7 @@ export async function deleteTaskImage(imageId: string) {
 
     // Get image details
     const { data: image, error: fetchError } = await supabase
-      .from('garden_images')
+      .from('demo_garden_images')
       .select('public_id')
       .eq('id', imageId)
       .single();
@@ -95,7 +95,7 @@ export async function deleteTaskImage(imageId: string) {
 
     // Delete from database
     const { error: deleteError } = await supabase
-      .from('garden_images')
+      .from('demo_garden_images')
       .delete()
       .eq('id', imageId);
 
@@ -113,7 +113,7 @@ export async function getResourceImages(resourceId: string, isProject = false) {
     const supabase = createServerComponentClient({ cookies });
 
     const { data: images, error } = await supabase
-      .from('garden_images')
+      .from('demo_garden_images')
       .select(
         `
         id,
@@ -122,7 +122,7 @@ export async function getResourceImages(resourceId: string, isProject = false) {
         caption,
         created_at,
         uploaded_by,
-        user:profiles(email, full_name)
+        user:demo_profiles(email, full_name)
       `
       )
       .eq(isProject ? 'project_id' : 'task_id', resourceId)

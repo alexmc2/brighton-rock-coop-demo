@@ -8,19 +8,19 @@ import type { DoodlePollWithDetails } from '@/types/members/doodle';
 export async function getDoodlePollById(id: string) {
   try {
     const { data: poll, error } = await supabaseAdmin
-      .from('doodle_polls')
+      .from('demo_doodle_polls')
       .select(
         `
         *,
-        created_by_user:profiles!doodle_polls_created_by_fkey(
+        created_by_user:demo_profiles!demo_doodle_polls_created_by_fkey(
           id,
           email,
           full_name
         ),
-        options:doodle_poll_options(*),
-        participants:doodle_poll_participants(
+        options:demo_doodle_poll_options(*),
+        participants:demo_doodle_poll_participants(
           *,
-          user:profiles!doodle_poll_participants_user_id_fkey(
+          user:demo_profiles!demo_doodle_poll_participants_user_id_fkey(
             id,
             email,
             full_name
@@ -59,7 +59,7 @@ export async function getCurrentUserWithProfile() {
 
     // Then get their profile
     const { data: profile, error: profileError } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('*')
       .eq('id', user.id)
       .single();

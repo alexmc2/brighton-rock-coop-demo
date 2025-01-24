@@ -219,16 +219,18 @@ export default function SocialEventDetails({
             </span>
           </div>
 
-          <h2 className="text-2xl py-2 font-semibold text-slate-900 dark:text-white">
+          <h2 className="text-2xl pt-4 font-semibold text-slate-700 dark:text-slate-200">
             {event.title}
           </h2>
 
-          <div className="text-sm text-slate-600 dark:text-slate-300">
+          <div className="text-sm text-slate-500 dark:text-slate-500">
             Event created by{' '}
             {event.created_by_user.full_name || event.created_by_user.email} on{' '}
             {format(new Date(event.created_at), 'do MMMM, yyyy')}
           </div>
-
+          <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2 pt-4">
+            Description
+          </h3>
           {event.description && (
             <p className="text-sm text-slate-600 dark:text-slate-300 mt-3">
               {event.description}

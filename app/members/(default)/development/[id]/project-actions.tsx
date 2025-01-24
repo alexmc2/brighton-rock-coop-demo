@@ -117,7 +117,7 @@ export default function ProjectActions({ initiative }: ProjectActionsProps) {
       };
 
       const { error: updateError } = await supabase
-        .from('development_initiatives')
+        .from('demo_development_initiatives')
         .update(data)
         .eq('id', initiative.id);
 

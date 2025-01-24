@@ -26,7 +26,7 @@ export async function createSocialEvent(data: CreateSocialEventData) {
     if (!user) throw new Error('Not authenticated');
 
     const { data: profile, error: profileError } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('full_name')
       .eq('id', user.id)
       .single();
@@ -51,7 +51,7 @@ export async function createSocialEvent(data: CreateSocialEventData) {
     };
 
     const { data: newEvent, error: insertError } = await supabase
-      .from('social_events')
+      .from('demo_social_events')
       .insert(eventData)
       .select()
       .single();
@@ -73,7 +73,7 @@ export async function createSocialEvent(data: CreateSocialEventData) {
       };
 
       const { error: calendarError } = await supabase
-        .from('calendar_events')
+        .from('demo_calendar_events')
         .insert(calendarData);
 
       if (calendarError) throw calendarError;

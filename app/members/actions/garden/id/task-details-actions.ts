@@ -9,28 +9,28 @@ export async function getTaskDetails(taskId: string) {
     const supabase = createServerComponentClient({ cookies });
 
     const { data: task, error } = await supabase
-      .from('garden_tasks')
+      .from('demo_garden_tasks')
       .select(
         `
         *,
-        area:garden_areas(id, name),
-        comments:garden_comments(
+        area:demo_garden_areas(id, name),
+        comments:demo_garden_comments(
           *,
-          user:profiles!garden_comments_user_id_fkey(email, full_name)
+          user:demo_profiles!demo_garden_comments_user_id_fkey(email, full_name)
         ),
-        participants:garden_task_participants(
+        participants:demo_garden_task_participants(
           *,
-          user:profiles(email, full_name)
+          user:demo_profiles(email, full_name)
         ),
-        created_by_user:profiles!garden_tasks_created_by_fkey(email, full_name),
-        images:garden_images(
+        created_by_user:demo_profiles!demo_garden_tasks_created_by_fkey(email, full_name),
+        images:demo_garden_images(
           id,
           public_id,
           secure_url,
           caption,
           created_at,
           uploaded_by,
-          user:profiles!garden_images_uploaded_by_fkey(email, full_name)
+          user:demo_profiles!demo_garden_images_uploaded_by_fkey(email, full_name)
         )
       `
       )
@@ -82,7 +82,7 @@ export async function getUserAndTaskParticipation(
 
     // Get user profile
     const { data: profile, error: profileError } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('id, email, full_name')
       .eq('id', user.id)
       .single();
@@ -93,7 +93,7 @@ export async function getUserAndTaskParticipation(
 
     // Get participation status
     const { data: participation, error: participationError } = await supabase
-      .from('garden_task_participants')
+      .from('demo_garden_task_participants')
       .select('status')
       .eq('task_id', taskId)
       .eq('user_id', user.id)
@@ -130,7 +130,7 @@ export async function updateTaskParticipation({
     if (newStatus === null) {
       // Remove participation
       const { error: deleteError } = await supabase
-        .from('garden_task_participants')
+        .from('demo_garden_task_participants')
         .delete()
         .eq('task_id', taskId)
         .eq('user_id', userId);
@@ -139,14 +139,14 @@ export async function updateTaskParticipation({
     } else {
       // First delete any existing participation
       await supabase
-        .from('garden_task_participants')
+        .from('demo_garden_task_participants')
         .delete()
         .eq('task_id', taskId)
         .eq('user_id', userId);
 
       // Then add new participation with timestamps
       const { error: insertError } = await supabase
-        .from('garden_task_participants')
+        .from('demo_garden_task_participants')
         .insert({
           task_id: taskId,
           user_id: userId,
@@ -160,7 +160,7 @@ export async function updateTaskParticipation({
 
     // Fetch updated task data to return
     const { data: updatedParticipants, error: fetchError } = await supabase
-      .from('garden_task_participants')
+      .from('demo_garden_task_participants')
       .select(
         `
         id,
@@ -169,7 +169,7 @@ export async function updateTaskParticipation({
         status,
         created_at,
         updated_at,
-        user:profiles(id, email, full_name)
+        user:demo_profiles(id, email, full_name)
       `
       )
       .eq('task_id', taskId);

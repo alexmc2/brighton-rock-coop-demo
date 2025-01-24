@@ -17,7 +17,7 @@ export async function fetchProfiles() {
 
   try {
     const { data, error } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('id, email, full_name')
       .order('full_name', { ascending: true });
 
@@ -48,7 +48,7 @@ export async function createTodo(data: CreateTodoData) {
 
     // Insert Todo into Supabase
     const { data: newTodo, error: insertError } = await supabase
-      .from('todos')
+      .from('demo_todos')
       .insert({
         title: data.title.trim(),
         description: data.description.trim() || null,
@@ -62,15 +62,15 @@ export async function createTodo(data: CreateTodoData) {
       .select(
         `
         *,
-        created_by_user:profiles!todos_created_by_fkey(
+        created_by_user:demo_profiles!demo_todos_created_by_fkey(
           email,
           full_name
         ),
-        assigned_to_user:profiles!todos_assigned_to_fkey(
+        assigned_to_user:demo_profiles!demo_todos_assigned_to_fkey(
           email,
           full_name
         ),
-        last_modified_by_user:profiles!todos_last_modified_by_fkey(
+        last_modified_by_user:demo_profiles!demo_todos_last_modified_by_fkey(
           email,
           full_name
         )

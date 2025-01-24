@@ -9,7 +9,7 @@ export async function updateMaintenanceStatus(
 ) {
   try {
     const { error } = await supabaseAdmin
-      .from('maintenance_requests')
+      .from('demo_maintenance_requests')
       .update({ status })
       .eq('id', requestId);
 
@@ -25,14 +25,14 @@ export async function deleteMaintenanceRequest(requestId: string) {
   try {
     // Delete associated calendar events first
     await supabaseAdmin
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .delete()
       .eq('reference_id', requestId)
       .eq('event_type', 'maintenance_request');
 
     // Then delete the request
     const { error } = await supabaseAdmin
-      .from('maintenance_requests')
+      .from('demo_maintenance_requests')
       .delete()
       .eq('id', requestId);
 

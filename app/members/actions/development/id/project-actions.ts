@@ -42,7 +42,7 @@ export async function updateDevelopmentProject(
 
     // Update development initiative
     const { error: updateError } = await supabase
-      .from('development_initiatives')
+      .from('demo_development_initiatives')
       .update(updateData)
       .eq('id', data.id);
 
@@ -50,11 +50,11 @@ export async function updateDevelopmentProject(
 
     // Fetch updated initiative data
     const { data: updatedInitiative, error: fetchError } = await supabase
-      .from('development_initiatives')
+      .from('demo_development_initiatives')
       .select(
         `
         *,
-        created_by_user:profiles!development_initiatives_created_by_fkey (
+        created_by_user:demo_profiles!demo_development_initiatives_created_by_fkey (
           email,
           full_name
         ),
@@ -65,7 +65,7 @@ export async function updateDevelopmentProject(
             full_name
           )
         ),
-        assigned_to_user:profiles!development_initiatives_assigned_to_fkey (
+        assigned_to_user:demo_profiles!demo_development_initiatives_assigned_to_fkey (
           id,
           email,
           full_name

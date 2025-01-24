@@ -14,7 +14,7 @@ type DatabaseReactionResponse = {
   user_id: string;
   emoji: EmojiType;
   created_at: string;
-  profiles: {
+  demo_profiles: {
     email: string;
     full_name: string | null;
   };
@@ -22,12 +22,12 @@ type DatabaseReactionResponse = {
 
 const getTableName = (type: CommentResourceType['type']) => {
   const tables = {
-    development: 'development_comments',
-    garden: 'garden_comments',
-    maintenance: 'maintenance_comments',
-    task: 'task_comments',
-    todo: 'todo_comments',
-    social_event: 'social_event_comments',
+    development: 'demo_development_comments',
+    garden: 'demo_garden_comments',
+    maintenance: 'demo_maintenance_comments',
+    task: 'demo_task_comments',
+    todo: 'demo_todo_comments',
+    social_event: 'demo_social_event_comments',
   };
   return tables[type];
 };
@@ -109,7 +109,7 @@ export async function addReaction(commentId: string, emoji: EmojiType) {
   }
 
   const { data, error } = await supabase
-    .from('comment_reactions')
+    .from('demo_comment_reactions')
     .insert({
       comment_id: commentId,
       user_id: user.id,
@@ -122,7 +122,7 @@ export async function addReaction(commentId: string, emoji: EmojiType) {
       user_id,
       emoji,
       created_at,
-      profiles (
+      demo_profiles (
         email,
         full_name
       )
@@ -143,8 +143,8 @@ export async function addReaction(commentId: string, emoji: EmojiType) {
     emoji: reaction.emoji,
     created_at: reaction.created_at,
     user: {
-      email: reaction.profiles.email,
-      full_name: reaction.profiles.full_name,
+      email: reaction.demo_profiles.email,
+      full_name: reaction.demo_profiles.full_name,
     },
   };
 }
@@ -153,7 +153,7 @@ export async function deleteReaction(reactionId: string) {
   const supabase = createServerComponentClient({ cookies });
 
   const { error } = await supabase
-    .from('comment_reactions')
+    .from('demo_comment_reactions')
     .delete()
     .eq('id', reactionId);
 
@@ -164,7 +164,7 @@ export async function getReactions(commentIds: string[]) {
   const supabase = createServerComponentClient({ cookies });
 
   const { data, error } = await supabase
-    .from('comment_reactions')
+    .from('demo_comment_reactions')
     .select(
       `
       id,
@@ -172,7 +172,7 @@ export async function getReactions(commentIds: string[]) {
       user_id,
       emoji,
       created_at,
-      profiles (
+      demo_profiles (
         email,
         full_name
       )
@@ -190,8 +190,8 @@ export async function getReactions(commentIds: string[]) {
     emoji: reaction.emoji,
     created_at: reaction.created_at,
     user: {
-      email: reaction.profiles.email,
-      full_name: reaction.profiles.full_name,
+      email: reaction.demo_profiles.email,
+      full_name: reaction.demo_profiles.full_name,
     },
   }));
 }

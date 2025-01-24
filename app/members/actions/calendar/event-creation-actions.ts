@@ -38,13 +38,13 @@ export async function createCalendarEvent(
   // Delete any existing events for this reference if it's a garden task or development event
   if (referenceId) {
     await supabase
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .delete()
       .eq('reference_id', referenceId)
       .eq('event_type', eventType);
   }
   const { data, error } = await supabase
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .insert({
       title,
       description,
@@ -129,7 +129,7 @@ export async function createMaintenanceVisitEventServer(
 ) {
   // Delete any existing events for this visit using admin client
   await supabaseAdmin
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .delete()
     .eq('reference_id', visitId)
     .eq('event_type', 'maintenance_visit');
@@ -143,7 +143,7 @@ export async function createMaintenanceVisitEventServer(
 
   // Create the calendar event using admin client
   const { data, error } = await supabaseAdmin
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .insert({
       title,
       description: description,
@@ -241,7 +241,7 @@ export async function createSocialEventCalendarEvent(
   // Delete any existing events for this social event
   if (eventId) {
     await supabase
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .delete()
       .eq('reference_id', eventId)
       .eq('event_type', 'social_event');
@@ -249,7 +249,7 @@ export async function createSocialEventCalendarEvent(
 
   // Create calendar event directly to ensure correct category and subcategory
   const { data, error } = await supabase
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .insert({
       title,
       description,
@@ -284,7 +284,7 @@ export async function createManualCalendarEvent(
 ) {
   // Use supabaseAdmin instead of client
   const { data, error } = await supabaseAdmin
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .insert({
       title,
       description,

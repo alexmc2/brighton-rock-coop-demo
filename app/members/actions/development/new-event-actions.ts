@@ -30,7 +30,7 @@ export async function createDevelopmentEvent(data: CreateDevelopmentEventData) {
     if (!user) throw new Error('Not authenticated');
 
     const { data: profile, error: profileError } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('full_name')
       .eq('id', user.id)
       .single();
@@ -65,7 +65,7 @@ export async function createDevelopmentEvent(data: CreateDevelopmentEventData) {
     };
 
     const { data: newInitiative, error: insertError } = await supabase
-      .from('development_initiatives')
+      .from('demo_development_initiatives')
       .insert(eventData)
       .select()
       .single();
@@ -87,7 +87,7 @@ export async function createDevelopmentEvent(data: CreateDevelopmentEventData) {
       };
 
       const { error: calendarError } = await supabase
-        .from('calendar_events')
+        .from('demo_calendar_events')
         .insert(calendarData);
 
       if (calendarError) throw calendarError;

@@ -23,16 +23,18 @@ export async function createProjectReport({
     throw new Error('Not authenticated');
   }
 
-  const { data, error } = await supabase.from('garden_project_reports').insert({
-    project_id: projectId,
-    title,
-    content,
-    created_by: user.id,
-    last_modified_by: user.id,
-  }).select(`
+  const { data, error } = await supabase
+    .from('demo_garden_project_reports')
+    .insert({
+      project_id: projectId,
+      title,
+      content,
+      created_by: user.id,
+      last_modified_by: user.id,
+    }).select(`
       *,
-      created_by_user:profiles!created_by(*),
-      last_modified_by_user:profiles!last_modified_by(*)
+      created_by_user:demo_profiles!created_by(*),
+      last_modified_by_user:demo_profiles!last_modified_by(*)
     `);
 
   if (error) {
@@ -47,12 +49,12 @@ export async function getProjectReports(projectId: string) {
   const supabase = createServerActionClient({ cookies });
 
   const { data, error } = await supabase
-    .from('garden_project_reports')
+    .from('demo_garden_project_reports')
     .select(
       `
       *,
-      created_by_user:profiles!created_by(*),
-      last_modified_by_user:profiles!last_modified_by(*)
+      created_by_user:demo_profiles!created_by(*),
+      last_modified_by_user:demo_profiles!last_modified_by(*)
     `
     )
     .eq('project_id', projectId)
@@ -85,7 +87,7 @@ export async function updateProjectReport({
   }
 
   const { data, error } = await supabase
-    .from('garden_project_reports')
+    .from('demo_garden_project_reports')
     .update({
       title,
       content,
@@ -94,8 +96,8 @@ export async function updateProjectReport({
     })
     .eq('id', reportId).select(`
       *,
-      created_by_user:profiles!created_by(*),
-      last_modified_by_user:profiles!last_modified_by(*)
+      created_by_user:demo_profiles!created_by(*),
+      last_modified_by_user:demo_profiles!last_modified_by(*)
     `);
 
   if (error) {
@@ -125,7 +127,7 @@ export async function deleteProjectReport({
   }
 
   const { error } = await supabase
-    .from('garden_project_reports')
+    .from('demo_garden_project_reports')
     .delete()
     .eq('id', reportId);
 

@@ -9,15 +9,15 @@ export async function getDoodlePolls() {
     const supabase = createServerComponentClient({ cookies });
 
     const { data: polls, error } = await supabase
-      .from('doodle_polls')
+      .from('demo_doodle_polls')
       .select(
         `
         *,
-        created_by_user:profiles!doodle_polls_created_by_fkey(email, full_name),
-        options:doodle_poll_options(*),
-        participants:doodle_poll_participants(
+        created_by_user:demo_profiles!demo_doodle_polls_created_by_fkey(email, full_name),
+        options:demo_doodle_poll_options(*),
+        participants:demo_doodle_poll_participants(
           *,
-          user:profiles!doodle_poll_participants_user_id_fkey(email, full_name)
+          user:demo_profiles!demo_doodle_poll_participants_user_id_fkey(email, full_name)
         )
       `
       )

@@ -6,24 +6,24 @@ import supabaseAdmin from '@/lib/members/supabaseAdmin';
 export async function getGardenTask(id: string) {
   try {
     const { data: task, error } = await supabaseAdmin
-      .from('garden_tasks')
+      .from('demo_garden_tasks')
       .select(
         `
         *,
-        area:garden_areas!garden_tasks_area_id_fkey(
+        area:demo_garden_areas!demo_garden_tasks_area_id_fkey(
           id,
           name,
           description
         ),
-        comments:garden_comments(
+        comments:demo_garden_comments(
           *,
-          user:profiles!garden_comments_user_id_fkey(
+          user:demo_profiles!demo_garden_comments_user_id_fkey(
             id,
             email,
             full_name
           )
         ),
-        created_by_user:profiles!garden_tasks_created_by_fkey(
+        created_by_user:demo_profiles!demo_garden_tasks_created_by_fkey(
             id,
             email,
             full_name
@@ -31,7 +31,10 @@ export async function getGardenTask(id: string) {
       `
       )
       .eq('id', id)
-      .order('created_at', { foreignTable: 'garden_comments', ascending: true })
+      .order('created_at', {
+        foreignTable: 'demo_garden_comments',
+        ascending: true,
+      })
       .single();
 
     if (error) {

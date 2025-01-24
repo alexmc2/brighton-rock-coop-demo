@@ -60,7 +60,7 @@ export async function uploadImage(formData: FormData) {
     const result = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
-          folder: 'coop-images',
+          folder: 'coop-images-demo',
           resource_type: 'auto',
           format: 'webp',
           quality: 'auto',

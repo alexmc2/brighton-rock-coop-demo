@@ -12,49 +12,49 @@ import supabaseAdmin from '@/lib/members/supabaseAdmin';
 export async function getProjectDetails(id: string) {
   try {
     const { data: project, error } = await supabaseAdmin
-      .from('garden_projects')
+      .from('demo_garden_projects')
       .select(
         `
         *,
-        area:garden_areas!garden_projects_area_id_fkey(
+        area:demo_garden_areas!demo_garden_projects_area_id_fkey(
           id,
           name,
           description
         ),
-        comments:garden_comments(
+        comments:demo_garden_comments(
           *,
-          user:profiles!garden_comments_user_id_fkey(
+          user:demo_profiles!demo_garden_comments_user_id_fkey(
             id,
             email,
             full_name
           )
         ),
-        created_by_user:profiles!garden_projects_created_by_fkey(
+        created_by_user:demo_profiles!demo_garden_projects_created_by_fkey(
           id,
           email,
           full_name
         ),
-        last_modified_by_user:profiles!garden_projects_last_modified_by_fkey(
+        last_modified_by_user:demo_profiles!demo_garden_projects_last_modified_by_fkey(
           id,
           email,
           full_name
         ),
-        participants:garden_project_participants(
+        participants:demo_garden_project_participants(
           *,
-          user:profiles(
+          user:demo_profiles(
             id,
             email,
             full_name
           )
         ),
-        images:garden_images(
+        images:demo_garden_images(
           id,
           public_id,
           secure_url,
           caption,
           created_at,
           uploaded_by,
-          user:profiles!garden_images_uploaded_by_fkey(
+          user:demo_profiles!demo_garden_images_uploaded_by_fkey(
             id,
             email,
             full_name
@@ -63,8 +63,14 @@ export async function getProjectDetails(id: string) {
       `
       )
       .eq('id', id)
-      .order('created_at', { foreignTable: 'garden_comments', ascending: true })
-      .order('created_at', { foreignTable: 'garden_images', ascending: false })
+      .order('created_at', {
+        foreignTable: 'demo_garden_comments',
+        ascending: true,
+      })
+      .order('created_at', {
+        foreignTable: 'demo_garden_images',
+        ascending: false,
+      })
       .single();
 
     if (error) {
@@ -106,7 +112,7 @@ export async function getUserAndProjectParticipation(
 
     // Get user profile
     const { data: profile, error: profileError } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('id, email, full_name')
       .eq('id', user.id)
       .single();
@@ -117,7 +123,7 @@ export async function getUserAndProjectParticipation(
 
     // Get participation status
     const { data: participation, error: participationError } = await supabase
-      .from('garden_project_participants')
+      .from('demo_garden_project_participants')
       .select('status')
       .eq('project_id', projectId)
       .eq('user_id', user.id)
@@ -154,7 +160,7 @@ export async function updateProjectParticipation({
     if (newStatus === null) {
       // Remove participation
       const { error: deleteError } = await supabase
-        .from('garden_project_participants')
+        .from('demo_garden_project_participants')
         .delete()
         .eq('project_id', projectId)
         .eq('user_id', userId);
@@ -163,14 +169,14 @@ export async function updateProjectParticipation({
     } else {
       // First delete any existing participation
       await supabase
-        .from('garden_project_participants')
+        .from('demo_garden_project_participants')
         .delete()
         .eq('project_id', projectId)
         .eq('user_id', userId);
 
       // Then add new participation with timestamps
       const { error: insertError } = await supabase
-        .from('garden_project_participants')
+        .from('demo_garden_project_participants')
         .insert({
           project_id: projectId,
           user_id: userId,
@@ -184,11 +190,11 @@ export async function updateProjectParticipation({
 
     // Fetch updated project data to return
     const { data: updatedParticipants, error: fetchError } = await supabase
-      .from('garden_project_participants')
+      .from('demo_garden_project_participants')
       .select(
         `
         *,
-        user:profiles(
+        user:demo_profiles(
           id,
           email,
           full_name
@@ -210,11 +216,11 @@ export async function getProjectParticipants(projectId: string) {
   const supabase = createServerComponentClient({ cookies });
 
   const { data, error } = await supabase
-    .from('garden_project_participants')
+    .from('demo_garden_project_participants')
     .select(
       `
       *,
-      user:profiles(
+      user:demo_profiles(
         id,
         email,
         full_name

@@ -24,7 +24,7 @@ export async function getMaintenanceRequestId(
 ): Promise<string | null> {
   const supabase = createServerComponentClient({ cookies });
   const { data, error } = await supabase
-    .from('maintenance_visits')
+    .from('demo_maintenance_visits')
     .select('request_id')
     .eq('id', visitId)
     .single();
@@ -42,15 +42,15 @@ export async function getEventDetails(
 ): Promise<CalendarEventWithDetails | null> {
   const supabase = createServerComponentClient({ cookies });
   const { data, error } = await supabase
-    .from('calendar_events')
+    .from('demo_calendar_events')
     .select(
       `
       *,
-      created_by_user:profiles!calendar_events_created_by_fkey(
+      created_by_user:demo_profiles!demo_calendar_events_created_by_fkey(
         email,
         full_name
       ),
-      last_modified_by_user:profiles!calendar_events_last_modified_by_fkey(
+      last_modified_by_user:demo_profiles!demo_calendar_events_last_modified_by_fkey(
         email,
         full_name
       )
@@ -86,7 +86,7 @@ export async function updateEvent({
 
   try {
     const { error } = await supabase
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .update({
         title,
         description,
@@ -115,7 +115,7 @@ export async function deleteEvent(eventId: string, referenceId: string | null) {
     // If this is a doodle poll event, update the poll to remove the event_id
     if (referenceId) {
       const { error: pollError } = await supabase
-        .from('doodle_polls')
+        .from('demo_doodle_polls')
         .update({
           event_id: null,
           closed: true, // Keep it closed even if event is deleted
@@ -131,7 +131,7 @@ export async function deleteEvent(eventId: string, referenceId: string | null) {
 
     // Delete the event
     const { error } = await supabase
-      .from('calendar_events')
+      .from('demo_calendar_events')
       .delete()
       .eq('id', eventId);
 

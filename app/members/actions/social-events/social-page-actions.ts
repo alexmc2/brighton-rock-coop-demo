@@ -8,18 +8,18 @@ import { SocialEventWithDetails } from '@/types/members/social';
 export async function getSocialEvents() {
   try {
     const { data: events, error } = await supabaseAdmin
-      .from('social_events')
+      .from('demo_social_events')
       .select(
         `
         *,
-        created_by_user:profiles!social_events_created_by_fkey(email, full_name),
-        comments:social_event_comments(
+        created_by_user:demo_profiles!demo_social_events_created_by_fkey(email, full_name),
+        comments:demo_social_event_comments(
           *,
-          user:profiles!social_event_comments_user_id_fkey(email, full_name)
+          user:demo_profiles!demo_social_event_comments_user_id_fkey(email, full_name)
         ),
-        participants:social_event_participants(
+        participants:demo_social_event_participants(
           *,
-          user:profiles!social_event_participants_user_id_fkey(email, full_name)
+          user:demo_profiles!demo_social_event_participants_user_id_fkey(email, full_name)
         )
       `
       )

@@ -36,7 +36,7 @@ export async function createMaintenanceRequest({
     if (houseId === '__all__') {
       // Get all houses
       const { data: houses, error: housesError } = await supabaseAdmin
-        .from('houses')
+        .from('demo_houses')
         .select('id')
         .order('name');
 
@@ -44,7 +44,7 @@ export async function createMaintenanceRequest({
 
       // Create a request for each house
       for (const house of houses) {
-        await supabaseAdmin.from('maintenance_requests').insert({
+        await supabaseAdmin.from('demo_maintenance_requests').insert({
           title,
           description,
           house_id: house.id,
@@ -56,7 +56,7 @@ export async function createMaintenanceRequest({
     } else {
       // Create a single request for the selected house
       const { error: insertError } = await supabaseAdmin
-        .from('maintenance_requests')
+        .from('demo_maintenance_requests')
         .insert({
           title,
           description,

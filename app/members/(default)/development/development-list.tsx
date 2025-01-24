@@ -88,11 +88,11 @@ export default function InitiativeList({
 
           // Fetch updated participants for the affected initiative
           const { data: participants } = await supabase
-            .from('event_participants')
+            .from('demo_event_participants')
             .select(
               `
               *,
-              user:profiles!event_participants_user_id_fkey (
+              user:demo_profiles!demo_event_participants_user_id_fkey (
                 email,
                 full_name
               )
@@ -292,7 +292,9 @@ export default function InitiativeList({
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
           <Button
-            onClick={() => setCurrentPage((parseInt(currentPage) - 1).toString())}
+            onClick={() =>
+              setCurrentPage((parseInt(currentPage) - 1).toString())
+            }
             disabled={currentPage === '1'}
             variant="outline"
           >
@@ -302,7 +304,9 @@ export default function InitiativeList({
             Page {currentPage} of {totalPages}
           </span>
           <Button
-            onClick={() => setCurrentPage((parseInt(currentPage) + 1).toString())}
+            onClick={() =>
+              setCurrentPage((parseInt(currentPage) + 1).toString())
+            }
             disabled={parseInt(currentPage) >= totalPages}
             variant="outline"
           >

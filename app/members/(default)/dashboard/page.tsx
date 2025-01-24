@@ -222,7 +222,7 @@ export default async function Dashboard() {
   let name = 'Member';
   if (session?.user?.id) {
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('full_name')
       .eq('id', session.user.id)
       .single();

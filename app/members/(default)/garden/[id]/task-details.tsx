@@ -91,7 +91,7 @@ export default function TaskDetails({ task: initialTask }: TaskDetailsProps) {
   useEffect(() => {
     async function fetchParticipants() {
       const { data: updatedParticipants, error } = await supabase
-        .from('garden_task_participants')
+        .from('demo_garden_task_participants')
         .select(
           `
           id,
@@ -100,7 +100,7 @@ export default function TaskDetails({ task: initialTask }: TaskDetailsProps) {
           status,
           created_at,
           updated_at,
-          user:profiles(id, email, full_name)
+          user:demo_profiles(id, email, full_name)
         `
         )
         .eq('task_id', task.id)

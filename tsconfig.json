@@ -31,6 +31,6 @@
     ".next/types/**/*.ts",
     "app/**/*",
     "tailwind.config.js"
-  ],
+, "script.js"  ],
   "exclude": ["node_modules"]
 }

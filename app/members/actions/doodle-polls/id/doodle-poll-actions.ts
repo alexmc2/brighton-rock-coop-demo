@@ -27,7 +27,7 @@ export async function updateDoodlePoll(data: UpdateDoodlePollData) {
 
     // Check if poll is closed
     const { data: pollData, error: pollError } = await supabase
-      .from('doodle_polls')
+      .from('demo_doodle_polls')
       .select('closed')
       .eq('id', data.id)
       .single();
@@ -67,15 +67,15 @@ export async function updateDoodlePoll(data: UpdateDoodlePollData) {
 
     // Fetch the updated poll with all relations
     const { data: updatedPoll, error: fetchError } = await supabase
-      .from('doodle_polls')
+      .from('demo_doodle_polls')
       .select(
         `
         *,
-        created_by_user:profiles!doodle_polls_created_by_fkey(email, full_name),
-        options:doodle_poll_options(*),
-        participants:doodle_poll_participants(
+        created_by_user:demo_profiles!demo_doodle_polls_created_by_fkey(email, full_name),
+        options:demo_doodle_poll_options(*),
+        participants:demo_doodle_poll_participants(
           *,
-          user:profiles(email, full_name)
+          user:demo_profiles(email, full_name)
         )
       `
       )
@@ -103,7 +103,7 @@ export async function deleteDoodlePoll(pollId: string) {
   try {
     // Delete the poll and all related data
     const { error: deleteError } = await supabase
-      .from('doodle_polls')
+      .from('demo_doodle_polls')
       .delete()
       .eq('id', pollId);
 

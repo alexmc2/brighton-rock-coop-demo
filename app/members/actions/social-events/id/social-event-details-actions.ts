@@ -29,7 +29,7 @@ export async function getUserAndParticipation(
 
     // Get user profile
     const { data: profile, error: profileError } = await supabase
-      .from('profiles')
+      .from('demo_profiles')
       .select('id, email, full_name')
       .eq('id', user.id)
       .single();
@@ -40,7 +40,7 @@ export async function getUserAndParticipation(
 
     // Get participation status
     const { data: participation, error: participationError } = await supabase
-      .from('social_event_participants')
+      .from('demo_social_event_participants')
       .select('status')
       .eq('event_id', eventId)
       .eq('user_id', user.id)
@@ -77,7 +77,7 @@ export async function updateParticipation({
     if (newStatus === null) {
       // Remove participation
       const { error: deleteError } = await supabase
-        .from('social_event_participants')
+        .from('demo_social_event_participants')
         .delete()
         .eq('event_id', eventId)
         .eq('user_id', userId);
@@ -86,7 +86,7 @@ export async function updateParticipation({
     } else {
       // Add or update participation
       const { error: upsertError } = await supabase
-        .from('social_event_participants')
+        .from('demo_social_event_participants')
         .upsert({
           event_id: eventId,
           user_id: userId,
