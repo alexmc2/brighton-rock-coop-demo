@@ -3,8 +3,8 @@ import LoginForm from './login-form';
 import Logo from '@/components/members/ui/logo';
 
 export const metadata: Metadata = {
-  title: 'Sign In - Co-op Management',
-  description: 'Sign in to access the co-op management system',
+  title: 'Demo - Brighton Rock Co-op Management',
+  description: 'Brighton Rock Co-op management system demo',
 };
 
 export default function Login() {
@@ -14,9 +14,12 @@ export default function Login() {
         <div className="absolute inset-0 bg-gradient-to-t from-coop-600 to-coop-400 dark:from-sky-900 dark:to-sky-700" />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="relative max-w-lg text-white">
+            <div className="mb-6 inline-block rounded-lg bg-white/10 px-3 py-1 text-sm font-medium backdrop-blur-sm">
+              Demo Version
+            </div>
             <h1 className="mb-4 text-4xl font-bold">Brighton Rock Co-op</h1>
             <p className="text-lg opacity-90">
-              Sign in to access the co-op management app
+              Try out our co-op management app demo
             </p>
           </div>
         </div>
