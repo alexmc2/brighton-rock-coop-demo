@@ -2,7 +2,7 @@
 
 import { v2 as cloudinary } from 'cloudinary';
 import { getCloudinaryImages, deleteCloudinaryImage } from '@/utils/cloudinary';
-import { CloudinaryImage } from '@/types/gallery';
+import { CloudinaryImage } from '@/types/members/gallery';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

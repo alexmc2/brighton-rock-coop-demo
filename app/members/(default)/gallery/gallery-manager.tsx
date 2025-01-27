@@ -7,7 +7,7 @@ import ImageUploader from '@/app/members/(default)/gallery/image-uploader';
 import ImageGrid from './image-grid';
 import { Button } from '@/components/ui/button';
 import { ReloadIcon } from '@radix-ui/react-icons';
-import { CloudinaryImage } from '@/types/gallery';
+import { CloudinaryImage } from '@/types/members/gallery';
 
 interface GalleryManagerProps {
   initialImages: CloudinaryImage[];

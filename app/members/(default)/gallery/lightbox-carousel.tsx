@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/members/ui/dialog';
-import { CloudinaryImage } from '@/types/gallery';
+import { CloudinaryImage } from '@/types/members/gallery';
 
 interface LightboxCarouselProps {
   images: CloudinaryImage[];

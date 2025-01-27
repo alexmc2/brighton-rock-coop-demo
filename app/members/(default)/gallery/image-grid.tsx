@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
 } from '@/components/members/ui/alert-dialog';
 import { ImageGridSkeleton } from './image-grid-skeleton';
-import { CloudinaryImage } from '@/types/gallery';
+import { CloudinaryImage } from '@/types/members/gallery';
 import { getImages, deleteImage } from '@/app/members/actions/gallery/image-actions';
 
 interface ImageGridProps {
