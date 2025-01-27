@@ -7,9 +7,6 @@ export const metadata: Metadata = {
   description: 'Manage gallery images for the co-op website',
 };
 
-// Disable caching for this page
-export const revalidate = 0;
-
 export default async function GalleryPage() {
   // Fetch initial images server-side
   const initialImages = await getImages();

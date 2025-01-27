@@ -11,7 +11,7 @@ export async function getCloudinaryImages() {
   try {
     const result = await cloudinary.api.resources({
       type: 'upload',
-      prefix: 'coop-images-demo/',
+      prefix: process.env.CLOUDINARY_FOLDER_PREFIX || 'coop-images-demo/',
       max_results: 500,
       direction: 'desc',
       sort_by: 'created_at',
