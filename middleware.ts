@@ -1,5 +1,3 @@
-
-
 // middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -12,13 +10,30 @@ export async function middleware(request: NextRequest) {
 
   // Only run for /members routes, skip everything else
 
-  const response = NextResponse.next();
-  const supabase = createMiddlewareClient({ req: request, res: response });
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient({ req: request, res });
 
   // Attempt to get the session (and silently refresh token if needed)
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
+  // Create a mutable response that we can modify with headers
+  const response = NextResponse.next({
+    request: {
+      headers: new Headers(request.headers),
+    },
+  });
+
+  // Add cache control headers for all authenticated requests
+  if (session) {
+    response.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate, proxy-revalidate'
+    );
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+  }
 
   // Allow public access to the calendar ICS feed if the secret key is provided
   if (pathname === '/members/api/calendar') {
@@ -58,5 +73,5 @@ export async function middleware(request: NextRequest) {
 
 // Restrict the middleware to /members/... only
 export const config = {
-  matcher: ['/members/:path*'],
+  matcher: ['/members/:path*', '/api/members/:path*', '/api/auth/:path*'],
 };

@@ -3,6 +3,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { getCloudinaryImages, deleteCloudinaryImage } from '@/utils/cloudinary';
 import { CloudinaryImage } from '@/types/members/gallery';
+import { revalidatePath } from 'next/cache';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -15,7 +16,8 @@ export async function getImages() {
     const images = await getCloudinaryImages();
     return images.map((image: CloudinaryImage) => ({
       ...image,
-      uploaded_at: image.created_at, // Ensure we have the upload timestamp
+      uploaded_at: image.created_at,
+      timestamp: Date.now(), // Add timestamp for cache busting
     }));
   } catch (error) {
     console.error('Error fetching images:', error);
@@ -28,7 +30,10 @@ export async function deleteImage(publicId: string) {
     if (!publicId) {
       throw new Error('No public_id provided');
     }
-    return await deleteCloudinaryImage(publicId);
+    const result = await deleteCloudinaryImage(publicId);
+    // Revalidate the gallery page after deletion
+    revalidatePath('/members/gallery');
+    return result;
   } catch (error) {
     console.error('Delete error:', error);
     throw new Error('Failed to delete image');
@@ -69,6 +74,7 @@ export async function uploadImage(formData: FormData) {
             { width: 'auto', crop: 'scale' },
             { quality: 'auto:best' },
           ],
+          timestamp: Date.now(),
         },
         (error, result) => {
           if (error) {
@@ -79,6 +85,7 @@ export async function uploadImage(formData: FormData) {
             resolve({
               ...result,
               uploaded_at: new Date().toISOString(),
+              timestamp: Date.now(),
             });
           }
         }
@@ -93,6 +100,8 @@ export async function uploadImage(formData: FormData) {
       uploadStream.end(buffer);
     });
 
+    // Revalidate the gallery page after upload
+    revalidatePath('/members/gallery');
     return result;
   } catch (error) {
     console.error('Upload error:', error);

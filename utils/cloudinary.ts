@@ -15,18 +15,27 @@ export async function getCloudinaryImages() {
       max_results: 500,
       direction: 'desc',
       sort_by: 'created_at',
+      next: {
+        revalidate: 0,
+      },
     });
+
+    if (!result?.resources) {
+      console.error('No resources found in Cloudinary response');
+      return [];
+    }
 
     return result.resources.map((resource: any) => {
       // Create an optimized URL with Cloudinary transformations
       const optimizedUrl = cloudinary.url(resource.public_id, {
-        format: 'webp', // Force WebP format
-        quality: 'auto:best', // High-quality auto optimization
+        format: 'webp',
+        quality: 'auto:best',
         transformation: [
           { width: 'auto', dpr: 'auto', fetch_format: 'auto' },
           { responsive: true, width: 800, crop: 'scale' },
         ],
         secure: true,
+        version: resource.version || Date.now(),
       });
 
       return {
@@ -35,6 +44,7 @@ export async function getCloudinaryImages() {
         created_at: resource.created_at,
         width: resource.width,
         height: resource.height,
+        version: resource.version,
       };
     });
   } catch (error) {

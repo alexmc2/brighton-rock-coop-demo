@@ -1,14 +1,23 @@
 import { Metadata } from 'next';
 import GalleryManager from '@/app/members/(default)/gallery/gallery-manager';
 import { getImages } from '@/app/members/actions/gallery/image-actions';
+import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
   title: 'Gallery Management - Co-op',
   description: 'Manage gallery images for the co-op website',
 };
 
+// Force dynamic rendering and disable caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+
 export default async function GalleryPage() {
-  // Fetch initial images server-side
+  // Force dynamic execution by reading headers
+  headers();
+
+  // Fetch initial images server-side with cache-busting
   const initialImages = await getImages();
 
   return (
@@ -19,7 +28,10 @@ export default async function GalleryPage() {
             Co-op Image Gallery 📷
           </h1>
         </div>
-        <GalleryManager initialImages={initialImages} />
+        <GalleryManager
+          initialImages={initialImages}
+          key={Date.now()} // Force remount on navigation
+        />
       </div>
     </div>
   );
