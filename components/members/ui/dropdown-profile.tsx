@@ -95,7 +95,7 @@ export default function DropdownProfile({
       <DropdownMenuContent
         align={align}
         sideOffset={4}
-        className="w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 p-0.5 duration-200"
+        className="w-56 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700/60 p-0.5 duration-200"
       >
         <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-gray-200 dark:border-gray-700/60">
           <div className="font-medium text-gray-800 dark:text-gray-100">

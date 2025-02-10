@@ -56,7 +56,7 @@ const categoryColors: Record<SocialEventCategory, string> = {
     'bg-indigo-100 text-indigo-800 dark:bg-indigo-800/30 dark:text-indigo-300',
   beach: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-800/30 dark:text-cyan-300',
   writing_club:
-    'bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-300',
+    'bg-gray-100 text-gray-800 dark:bg-slate-800/30 dark:text-gray-300',
 };
 
 const statusColors: Record<SocialEventStatus, string> = {

@@ -178,7 +178,7 @@ export default function CreateEventButton({
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="sm:max-w-lg bg-white dark:bg-slate-900">
+        <DialogContent className="sm:max-w-lg bg-white dark:bg-slate-900 ">
           <DialogHeader>
             <DialogTitle className="text-slate-900 dark:text-slate-100">
               Create Event from Poll
@@ -211,8 +211,8 @@ export default function CreateEventButton({
                         ? 'border-green-200 dark:border-sky-800 bg-green-100 dark:bg-sky-900/80'
                         : score.option.id === bestOption.option.id &&
                           score.option.id !== selectedOption
-                        ? 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40'
-                        : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/40'
+                        ? 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 /40'
+                        : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 /40'
                     )}
                   >
                     <RadioGroupItem
@@ -258,7 +258,7 @@ export default function CreateEventButton({
       </Dialog>
 
       <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-        <AlertDialogContent className="bg-white dark:bg-slate-900">
+        <AlertDialogContent className="bg-white dark:bg-slate-900 ">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-slate-900 dark:text-slate-100">
               Create Event

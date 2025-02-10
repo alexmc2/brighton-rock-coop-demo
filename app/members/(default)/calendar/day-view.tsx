@@ -18,7 +18,7 @@ export default function DayView() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-12rem)] overflow-y-auto">
-      <div className="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4">
+      <div className="sticky top-0 z-10  p-4">
         <div className="text-lg font-semibold text-slate-900 dark:text-slate-100">
           {format(selectedDate, 'EEEE')}
         </div>
@@ -34,7 +34,10 @@ export default function DayView() {
           );
 
           return (
-            <div key={hour} className="group relative min-h-[60px] dark:bg-slate-900">
+            <div
+              key={hour}
+              className="group relative min-h-[60px] dark:bg-slate-800 "
+            >
               <div className="text-xs font-medium text-slate-500 dark:text-slate-400 w-16 py-2 text-right pr-4 sticky left-0">
                 {hour === 0
                   ? '12 AM'

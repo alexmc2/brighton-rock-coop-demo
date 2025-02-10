@@ -33,6 +33,13 @@ import {
   SelectValue,
 } from '@/components/members/ui/select';
 import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardTitle,
+  CardDescription,
+} from '@/components/members/ui/card';
+import {
   getUsers,
   updateMaintenanceRequest,
   updateMaintenanceVisit,
@@ -198,15 +205,15 @@ export default function RequestDetails({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg">
-      <div className="px-5 py-4">
-        <div className="flex sm:justify-start justify-end mb-6">
-          <div className="flex flex-row items-center gap-2 w-full sm:w-auto">
+    <Card className="bg-white dark:bg-slate-800 rounded-lg">
+      <CardHeader>
+        <div className="flex flex-col space-y-4">
+          <div className="flex flex-row sm:flex-row gap-2">
             <Button
               onClick={() => setIsEditingRequest(!isEditingRequest)}
               variant="default"
               size="sm"
-              className="flex-1 sm:flex-none"
+              className="w-full sm:w-auto"
             >
               {isEditingRequest ? 'Cancel Edit' : 'Edit Details'}
             </Button>
@@ -215,336 +222,346 @@ export default function RequestDetails({
               onClick={() => setShowDeleteDialog(true)}
               disabled={isDeleting}
               size="sm"
-              className="flex-1 sm:flex-none"
+              className="w-full sm:w-auto"
             >
               {isDeleting ? 'Deleting...' : 'Delete'}
             </Button>
           </div>
+          <CardTitle>
+            <h1 className="text-xl py-2 font-bold text-slate-800 dark:text-slate-100">
+              {request.title}
+            </h1>
+          </CardTitle>
         </div>
-
-        {error && (
-          <div className="mb-4 p-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/50 rounded">
-            {error}
-          </div>
-        )}
-
-        {isEditingRequest ? (
-          <form onSubmit={handleRequestUpdate} className="space-y-4">
-            {/* Title */}
-            <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
+      </CardHeader>
+      <CardContent>
+        <div className="">
+          {error && (
+            <div className="mb-4 p-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/50 rounded">
+              {error}
             </div>
+          )}
 
-            {/* Description */}
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-                rows={3}
-              />
-            </div>
+          {isEditingRequest ? (
+            <form onSubmit={handleRequestUpdate} className="space-y-4">
+              {/* Title */}
+              <div className="space-y-2">
+                <Label htmlFor="title">Title</Label>
+                <Input
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+              </div>
 
-            {/* House */}
-            <div className="space-y-2">
-              <Label htmlFor="house_id">House</Label>
-              <Select value={houseId} onValueChange={setHouseId}>
-                <SelectTrigger id="house_id">
-                  <SelectValue placeholder="Select a house" />
-                </SelectTrigger>
-                <SelectContent>
-                  {houses
-                    .filter((house) => !house.virtual)
-                    .map((house) => (
-                      <SelectItem key={house.id} value={house.id}>
-                        {house.name}
+              {/* Description */}
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                  rows={3}
+                />
+              </div>
+
+              {/* House */}
+              <div className="space-y-2">
+                <Label htmlFor="house_id">House</Label>
+                <Select value={houseId} onValueChange={setHouseId}>
+                  <SelectTrigger id="house_id">
+                    <SelectValue placeholder="Select a house" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {houses
+                      .filter((house) => !house.virtual)
+                      .map((house) => (
+                        <SelectItem key={house.id} value={house.id}>
+                          {house.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Priority */}
+              <div className="space-y-2">
+                <Label htmlFor="priority">Priority</Label>
+                <Select
+                  value={priority}
+                  onValueChange={(value) =>
+                    setPriority(value as MaintenancePriority)
+                  }
+                >
+                  <SelectTrigger id="priority">
+                    <SelectValue placeholder="Select priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="low">Low</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="urgent">Urgent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Status */}
+              <div className="space-y-2">
+                <Label htmlFor="status">Status</Label>
+                <Select
+                  value={status}
+                  onValueChange={(value) =>
+                    setStatus(value as MaintenanceStatus)
+                  }
+                >
+                  <SelectTrigger id="status">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="scheduled">Scheduled</SelectItem>
+                    <SelectItem value="in_progress">In Progress</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="cancelled">Cancelled</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Assigned To */}
+              <div className="space-y-2">
+                <Label htmlFor="assigned_to">Assigned To</Label>
+                <Select
+                  value={assignedTo || 'unassigned'}
+                  onValueChange={(value) =>
+                    setAssignedTo(value === 'unassigned' ? null : value)
+                  }
+                >
+                  <SelectTrigger id="assigned_to">
+                    <SelectValue placeholder="Select assignee" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="unassigned">Not Assigned</SelectItem>
+                    {users.map((user) => (
+                      <SelectItem key={user.id} value={user.id}>
+                        {user.full_name || user.email}
                       </SelectItem>
                     ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Priority */}
-            <div className="space-y-2">
-              <Label htmlFor="priority">Priority</Label>
-              <Select
-                value={priority}
-                onValueChange={(value) =>
-                  setPriority(value as MaintenancePriority)
-                }
-              >
-                <SelectTrigger id="priority">
-                  <SelectValue placeholder="Select priority" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">Low</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                  <SelectItem value="urgent">Urgent</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Status */}
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select
-                value={status}
-                onValueChange={(value) => setStatus(value as MaintenanceStatus)}
-              >
-                <SelectTrigger id="status">
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="scheduled">Scheduled</SelectItem>
-                  <SelectItem value="in_progress">In Progress</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Assigned To */}
-            <div className="space-y-2">
-              <Label htmlFor="assigned_to">Assigned To</Label>
-              <Select
-                value={assignedTo || 'unassigned'}
-                onValueChange={(value) =>
-                  setAssignedTo(value === 'unassigned' ? null : value)
-                }
-              >
-                <SelectTrigger id="assigned_to">
-                  <SelectValue placeholder="Select assignee" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="unassigned">Not Assigned</SelectItem>
-                  {users.map((user) => (
-                    <SelectItem key={user.id} value={user.id}>
-                      {user.full_name || user.email}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex justify-end space-x-2">
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setIsEditingRequest(false)}
-                className="hover:bg-slate-100 dark:hover:bg-slate-800"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting} variant="default">
-                {isSubmitting ? 'Saving...' : 'Save Changes'}
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <div className="space-y-4">
-            {/* Description */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Description
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                {request.description}
-              </p>
-            </div>
-
-            {/* House */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                House
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                {request.house.name}
-              </p>
-            </div>
-
-            {/* Priority */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Priority
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                {request.priority.charAt(0).toUpperCase() +
-                  request.priority.slice(1)}
-              </p>
-            </div>
-
-            {/* Status */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Status
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                {request.status.charAt(0).toUpperCase() +
-                  request.status.slice(1).replace('_', ' ')}
-              </p>
-            </div>
-
-            {/* Assigned To */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Assigned To
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                {request.assigned_to_user
-                  ? request.assigned_to_user.full_name ||
-                    request.assigned_to_user.email
-                  : 'Not Assigned'}
-              </p>
-            </div>
-
-            {/* Reported By */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Reported By
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                {request.reported_by_user.full_name ||
-                  request.reported_by_user.email}
-              </p>
-            </div>
-
-            {/* Date Reported */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Date Reported
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                {format(new Date(request.created_at), 'MMM d, yyyy h:mm a')}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Visit History */}
-        <div className="mt-6 ">
-          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-4">
-            Visit History
-          </h3>
-          <div className="space-y-3 ">
-            {upcomingVisits.length > 0 && (
-              <div>
-                <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
-                  Upcoming Visits:
-                </h4>
-                {upcomingVisits.map((visit) => (
-                  <div
-                    key={visit.id}
-                    className="flex flex-col sm:flex-row items-start p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg mb-2"
-                  >
-                    {editingVisit === visit.id ? (
-                      <VisitForm
-                        visit={visit}
-                        onSubmit={(e) => handleVisitUpdate(visit.id, e)}
-                        onCancel={() => setEditingVisit(null)}
-                        isSubmitting={isSubmitting}
-                      />
-                    ) : (
-                      <>
-                        <div className="grow p-1 w-full">
-                          <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                            {format(
-                              new Date(visit.scheduled_date),
-                              'MMM d, yyyy'
-                            )}{' '}
-                            at{' '}
-                            {format(new Date(visit.scheduled_date), 'h:mm a')}
-                          </div>
-                          <div className="text-sm text-slate-600 dark:text-slate-300">
-                            Estimated Duration: {visit.estimated_duration}
-                          </div>
-                          {visit.notes && (
-                            <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-                              Notes: {visit.notes}
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex space-x-2 mt-2 sm:mt-0 w-full sm:w-auto">
-                          <Button
-                            onClick={() => setEditingVisit(visit.id)}
-                            variant="default"
-                            size="sm"
-                            className="flex-1 sm:flex-none"
-                          >
-                            Edit Visit
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              setVisitToDelete(visit.id);
-                              setShowDeleteDialog(true);
-                            }}
-                            variant="destructive"
-                            size="sm"
-                            className="flex-1 sm:flex-none"
-                          >
-                            Delete Visit
-                          </Button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))}
+                  </SelectContent>
+                </Select>
               </div>
-            )}
 
-            {pastVisits.length > 0 && (
+              <div className="flex justify-end space-x-2">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setIsEditingRequest(false)}
+                  className="hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSubmitting} variant="default">
+                  {isSubmitting ? 'Saving...' : 'Save Changes'}
+                </Button>
+              </div>
+            </form>
+          ) : (
+            <div className="space-y-4">
+              {/* Description */}
               <div>
-                <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2 ">
-                  Past Visits:
-                </h4>
-                {pastVisits.map((visit) => (
-                  <div
-                    key={visit.id}
-                    className="flex items-start p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg mb-2"
-                  >
-                    <div className="grow p-1">
-                      <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                        {format(
-                          new Date(visit.scheduled_date),
-                          'MMM d, yyyy h:mm a'
-                        )}
-                      </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-300">
-                        Estimated Duration: {visit.estimated_duration}
-                      </div>
-                      {visit.notes && (
-                        <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-                          Notes: {visit.notes}
-                        </div>
+                <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Description
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {request.description}
+                </p>
+              </div>
+
+              {/* House */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  House
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {request.house.name}
+                </p>
+              </div>
+
+              {/* Priority */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Priority
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {request.priority.charAt(0).toUpperCase() +
+                    request.priority.slice(1)}
+                </p>
+              </div>
+
+              {/* Status */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Status
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {request.status.charAt(0).toUpperCase() +
+                    request.status.slice(1).replace('_', ' ')}
+                </p>
+              </div>
+
+              {/* Assigned To */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Assigned To
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {request.assigned_to_user
+                    ? request.assigned_to_user.full_name ||
+                      request.assigned_to_user.email
+                    : 'Not Assigned'}
+                </p>
+              </div>
+
+              {/* Reported By */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Reported By
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {request.reported_by_user.full_name ||
+                    request.reported_by_user.email}
+                </p>
+              </div>
+
+              {/* Date Reported */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Date Reported
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  {format(new Date(request.created_at), 'MMM d, yyyy h:mm a')}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Visit History */}
+          <div className="mt-6 ">
+            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-4">
+              Visit History
+            </h3>
+            <div className="space-y-3 ">
+              {upcomingVisits.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-4">
+                    Upcoming Visits:
+                  </h4>
+                  {upcomingVisits.map((visit) => (
+                    <div
+                      key={visit.id}
+                      className="flex flex-col sm:flex-row items-start p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg mb-2"
+                    >
+                      {editingVisit === visit.id ? (
+                        <VisitForm
+                          visit={visit}
+                          onSubmit={(e) => handleVisitUpdate(visit.id, e)}
+                          onCancel={() => setEditingVisit(null)}
+                          isSubmitting={isSubmitting}
+                        />
+                      ) : (
+                        <>
+                          <div className="grow p-1 w-full">
+                            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-1">
+                              {format(
+                                new Date(visit.scheduled_date),
+                                'MMM d, yyyy'
+                              )}{' '}
+                              at{' '}
+                              {format(new Date(visit.scheduled_date), 'h:mm a')}
+                            </div>
+                            <div className="text-sm text-slate-600 dark:text-slate-300">
+                              Estimated Duration: {visit.estimated_duration}
+                            </div>
+                            {visit.notes && (
+                              <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                                Notes: {visit.notes}
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex space-x-2 mt-2 sm:mt-0 w-full sm:w-auto">
+                            <Button
+                              onClick={() => setEditingVisit(visit.id)}
+                              variant="default"
+                              size="xs"
+                              className="flex-1 sm:flex-none"
+                            >
+                              Edit Visit
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                setVisitToDelete(visit.id);
+                                setShowDeleteDialog(true);
+                              }}
+                              variant="destructive"
+                              size="xs"
+                              className="flex-1 sm:flex-none"
+                            >
+                              Delete Visit
+                            </Button>
+                          </div>
+                        </>
                       )}
                     </div>
-                    {visit.completed_at && (
-                      <span className="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900 px-2.5 py-0.5 text-xs font-medium text-green-800 dark-text-sky-200">
-                        Completed
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
 
-            {request.visits.length === 0 && (
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                No visits scheduled yet
-              </p>
-            )}
+              {pastVisits.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2 ">
+                    Past Visits:
+                  </h4>
+                  {pastVisits.map((visit) => (
+                    <div
+                      key={visit.id}
+                      className="flex items-start p-3 bg-slate-50 dark:bg-slate-900  rounded-lg mb-2"
+                    >
+                      <div className="grow p-1">
+                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-1">
+                          {format(
+                            new Date(visit.scheduled_date),
+                            'MMM d, yyyy h:mm a'
+                          )}
+                        </div>
+                        <div className="text-sm text-slate-600 dark:text-slate-300">
+                          Estimated Duration: {visit.estimated_duration}
+                        </div>
+                        {visit.notes && (
+                          <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                            Notes: {visit.notes}
+                          </div>
+                        )}
+                      </div>
+                      {visit.completed_at && (
+                        <span className="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900 px-2.5 py-0.5 text-xs font-medium text-green-800 dark-text-sky-200">
+                          Completed
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {request.visits.length === 0 && (
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  No visits scheduled yet
+                </p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </CardContent>
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -566,6 +583,6 @@ export default function RequestDetails({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </Card>
   );
 }

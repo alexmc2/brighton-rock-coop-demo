@@ -86,7 +86,9 @@ export default function ProjectActions({ initiative }: ProjectActionsProps) {
       }
     } catch (error) {
       console.error('Error deleting project:', error);
-      setError(error instanceof Error ? error.message : 'Failed to delete project');
+      setError(
+        error instanceof Error ? error.message : 'Failed to delete project'
+      );
     } finally {
       setIsDeleting(false);
       setShowDeleteDialog(false);
@@ -220,7 +222,9 @@ export default function ProjectActions({ initiative }: ProjectActionsProps) {
                 </Label>
                 <Select
                   value={category}
-                  onValueChange={(value) => setCategory(value as DevelopmentCategory)}
+                  onValueChange={(value) =>
+                    setCategory(value as DevelopmentCategory)
+                  }
                   disabled={isSubmitting}
                 >
                   <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
@@ -228,7 +232,9 @@ export default function ProjectActions({ initiative }: ProjectActionsProps) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="general">General</SelectItem>
-                    <SelectItem value="development_meeting">Development Meeting</SelectItem>
+                    <SelectItem value="development_meeting">
+                      Development Meeting
+                    </SelectItem>
                     <SelectItem value="social">Social Event</SelectItem>
                     <SelectItem value="outreach">Outreach</SelectItem>
                     <SelectItem value="policy">Policy</SelectItem>
@@ -293,7 +299,9 @@ export default function ProjectActions({ initiative }: ProjectActionsProps) {
               </Label>
               <Select
                 value={priority}
-                onValueChange={(value) => setPriority(value as DevelopmentPriority)}
+                onValueChange={(value) =>
+                  setPriority(value as DevelopmentPriority)
+                }
                 disabled={isSubmitting}
               >
                 <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">

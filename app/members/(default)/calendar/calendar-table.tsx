@@ -48,7 +48,7 @@ export default function CalendarTable() {
       {dayNames.map((day) => (
         <div
           key={day}
-          className="p-2 text-center text-sm font-semibold text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-900 bg-slate-50 dark:bg-slate-800"
+          className="p-2 text-center text-sm font-semibold text-slate-600 dark:text-slate-400  "
         >
           {day}
         </div>
@@ -66,11 +66,11 @@ export default function CalendarTable() {
           <div
             key={day.toISOString()}
             className={`
-              min-h-[120px] p-2 border border-slate-200 dark:border-slate-900
+              min-h-[120px] p-2 border border-slate-200 dark:border-slate-800
               ${
                 !isCurrentMonth
-                  ? 'bg-slate-100 dark:bg-slate-950 text-slate-400'
-                  : 'bg-white dark:bg-slate-900'
+                  ? 'bg-slate-100 dark:bg-slate-900 text-slate-400'
+                  : 'bg-white dark:bg-slate-800 '
               }
               ${isCurrentDay ? 'bg-slate-100 dark:bg-blue-900/20' : ''}
             `}

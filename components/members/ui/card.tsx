@@ -10,13 +10,14 @@ const Card = React.forwardRef<
     ref={ref}
     className={cn(
       [
-        'rounded-lg border border-slate-200',
+        'rounded-lg border',
+        'border-coop-200/20',
         'bg-white text-slate-700',
         'shadow-sm',
-        
+
         // Dark mode
-        'dark:border-slate-800',
-        'dark:bg-gray-800',
+        'dark:border-sky-500/20',
+        'dark:bg-slate-800',
         'dark:text-slate-300',
       ].join(' '),
       className
@@ -25,6 +26,35 @@ const Card = React.forwardRef<
   />
 ));
 Card.displayName = 'Card';
+
+const CardTreasury = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      [
+        'rounded-bl-lg rounded-br-lg',
+        'pt-4',
+        'border',
+        'border-3',
+        'border-t-0',
+        'bg-white text-slate-700',
+        'shadow-sm',
+        'border-coop-200/80',
+        'dark:border-sky-500/50',
+        // Dark mode
+
+        'dark:bg-slate-800',
+        'dark:text-slate-300',
+      ].join(' '),
+      className
+    )}
+    {...props}
+  />
+));
+CardTreasury.displayName = 'CardTreasury';
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
@@ -77,7 +107,11 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn(['p-6 pt-0'].join(' '), className)} {...props} />
+  <div
+    ref={ref}
+    className={cn(['p-6 pt-0 dark:border-slate-700  '].join(' '), className)}
+    {...props}
+  />
 ));
 CardContent.displayName = 'CardContent';
 
@@ -95,6 +129,7 @@ CardFooter.displayName = 'CardFooter';
 
 export {
   Card,
+  CardTreasury,
   CardHeader,
   CardFooter,
   CardTitle,

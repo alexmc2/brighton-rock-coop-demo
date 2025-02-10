@@ -65,13 +65,13 @@ export default function InitiativeList({
   useEffect(() => {
     // Subscribe to changes in event_participants table
     const channel = supabase
-      .channel('event_participants_changes')
+      .channel('demo_event_participants_changes')
       .on(
         'postgres_changes' as never,
         {
           event: '*',
           schema: 'public',
-          table: 'event_participants',
+          table: 'demo_event_participants',
         },
         async (
           payload: RealtimePostgresChangesPayload<{

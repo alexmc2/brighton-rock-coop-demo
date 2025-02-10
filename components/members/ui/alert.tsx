@@ -18,8 +18,8 @@ const alertVariants = cva(
           '[&>svg]:text-destructive',
         ].join(' '),
         warning: [
-          'border-yellow-500/50 text-yellow-600 dark:text-yellow-500',
-          '[&>svg]:text-yellow-600',
+          'border-orange-700/80 text-orange-700 dark:text-yellow-500',
+          '[&>svg]:text-orange-700 dark:[&>svg]:text-yellow-500',
           'dark:border-yellow-500/50',
         ].join(' '),
         success: [

@@ -99,12 +99,6 @@ export default function RequestHeader({ request }: RequestHeaderProps) {
         </Link>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-2">
-        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-          {request.title}
-        </h1>
-      </div>
-
       {error && (
         <div className="mb-4 p-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/50 rounded">
           {error}

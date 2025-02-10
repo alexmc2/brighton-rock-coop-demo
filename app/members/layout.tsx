@@ -3,6 +3,7 @@ import './css/style.css';
 import { Inter } from 'next/font/google';
 import Theme from '@/providers/members/theme-provider';
 import AppProvider from '@/providers/members/app-provider';
+import { Toaster } from '@/components/members/ui/sonner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,9 +27,10 @@ export default function MembersLayout({
     <div className={`${inter.variable}`}>
       <Theme>
         <AppProvider>
-          <div className="font-inter antialiased bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-base md:text-lg">
+          <div className="font-inter antialiased bg-slate-50 dark:bg-slate-900 text-gray-600 dark:text-gray-400 text-base md:text-lg">
             {children}
           </div>
+          <Toaster />
         </AppProvider>
       </Theme>
     </div>

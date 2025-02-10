@@ -124,7 +124,7 @@ export default function TodoList({ tasks }: TodoListProps) {
       completed:
         'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-300',
       cancelled: 'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-300',
-      todo: 'bg-gray-100 dark:bg-gray-900/50 text-gray-800 dark:text-gray-200',
+      todo: 'bg-gray-100 dark:bg-slate-900/50 text-gray-800 dark:text-gray-200',
     } as const;
     return colors[status] || colors.pending;
   };

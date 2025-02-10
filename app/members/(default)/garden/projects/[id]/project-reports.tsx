@@ -225,7 +225,7 @@ export default function ProjectReports({
               onChange={(e) => setReportTitle(e.target.value)}
               className="w-full text-lg "
             />
-            <div className="border border-slate-200 dark:border-slate-800 rounded-lg p-6 bg-white dark:bg-slate-900">
+            <div className="border border-slate-200 dark:border-slate-800 rounded-lg p-6 bg-white dark:bg-slate-900 ">
               <Tiptap
                 content={reportContent}
                 onChange={setReportContent}
@@ -265,7 +265,7 @@ export default function ProjectReports({
         {reports.map((report) => (
           <div
             key={report.id}
-            className="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900 transition-colors"
+            className="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900  transition-colors"
           >
             {/* Mobile-only buttons */}
             <div className="flex justify-start gap-2 mb-4 sm:hidden">

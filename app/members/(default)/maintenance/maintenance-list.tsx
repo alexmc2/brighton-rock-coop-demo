@@ -246,7 +246,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
             <div className="inline-block min-w-full align-middle">
               <div className="overflow-hidden">
                 <Table className="min-w-[1000px] w-full divide-y divide-slate-200 dark:divide-slate-700 rounded-lg">
-                  <TableHeader className="bg-slate-50 dark:bg-slate-900/20 rounded-lg">
+                  <TableHeader className="bg-slate-50 dark:bg-slate-900/50 rounded-lg">
                     <TableRow>
                       <TableHead className="min-w-[180px] w-[18%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Title
@@ -358,7 +358,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
                       <TableRow>
                         <TableCell
                           colSpan={9}
-                          className="text-center py-8 text-slate-500 dark:text-slate-400"
+                          className="text-center py-8 text-slate-500 dark:text-slate-400 "
                         >
                           No maintenance requests found
                         </TableCell>

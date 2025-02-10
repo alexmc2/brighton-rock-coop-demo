@@ -6,6 +6,7 @@ import {
   TodoStatus,
   TodoPriority,
 } from '@/types/members/todos';
+import TodoActions from './todo-actions';
 
 interface TodoDetailsProps {
   todo: TodoWithDetails;
@@ -49,7 +50,8 @@ export default function TodoDetails({ todo }: TodoDetailsProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 py-2">
+      <div className="flex flex-col gap-4"></div>
       <div className="px-5 py-4">
         <div className="space-y-4">
           {/* Status and Priority Badges */}
@@ -72,6 +74,9 @@ export default function TodoDetails({ todo }: TodoDetailsProps) {
             )}
           </div>
 
+          <div className="text-xl md:text-xl text-slate-800 dark:text-slate-100 font-bold ">
+            {todo.title}
+          </div>
           {/* Description */}
           <div>
             <h3 className="text-sm font-medium text-slate-800 dark:text-slate-100 mb-1">

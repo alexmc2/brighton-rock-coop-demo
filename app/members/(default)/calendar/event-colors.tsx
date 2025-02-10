@@ -42,6 +42,6 @@ export function getEventColor(category: string): string {
     case 'Co-op Social':
       return 'bg-violet-100 dark:bg-violet-900/50 text-violet-800 dark:text-violet-200';
     default:
-      return 'bg-slate-100 dark:bg-slate-900/50 text-slate-800 dark:text-slate-300';
+      return 'bg-slate-100 dark:bg-slate-900 /50 text-slate-800 dark:text-slate-300';
   }
 }

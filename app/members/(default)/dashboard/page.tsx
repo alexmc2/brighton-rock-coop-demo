@@ -233,7 +233,7 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 pb-8 pt-4 w-full max-w-[96rem] mx-auto">
+    <div className="px-4 sm:px-6 lg:px-6 pb-8  w-full max-w-[96rem] mx-auto">
       {/* Welcome Banner */}
       <div className="relative bg-gradient-to-tr  from-violet-500 to-violet-400 dark:from-sky-600/70 dark:to-sky-500/70 p-4 sm:p-6 rounded-lg overflow-hidden mb-8">
         {/* Background illustration */}
@@ -243,11 +243,11 @@ export default async function Dashboard() {
         ></div>
 
         {/* Content */}
-        <div className="relative md:p-2 p-2">
-          <h1 className="text-xl md:text-3xl text-slate-50 dark:text-slate-200 font-semibold pb-4 md:pb-4">
+        <div className="relative md:p-1 p-1">
+          <h1 className="prose text-xl md:text-2xl text-slate-50 dark:text-slate-200 font-semibold pb-2">
             Welcome to the Brighton Rock Co-op Management App, {name} 👋
           </h1>
-          <p className="dark:text-slate-300 text-slate-100 text-md md:text-xl ">
+          <p className="prose dark:text-slate-300 text-slate-100 text-md md:text-lg ">
             Here&apos;s what&apos;s happening in the co-op today:
           </p>
         </div>
@@ -263,7 +263,7 @@ export default async function Dashboard() {
             <Link
               key={role.name}
               href={role.href}
-              className="group flex flex-col p-5 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-300/50 dark:border-gray-700 hover:border-slate-100 dark:hover:border-sky-800 transition-all duration-300 ease-in-out hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.08)]"
+              className="group flex flex-col p-5 bg-white dark:bg-slate-800 shadow-sm rounded-xl border border-coop-200/50 dark:border-sky-500/20  hover:border-slate-100 dark:hover:border-sky-800 transition-all duration-300 ease-in-out hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.08)]"
             >
               <div className="flex items-center space-x-3 mb-3">
                 <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-violet-500/10 dark:bg-sky-500/15 text-violet-600 dark:text-sky-400 group-hover:bg-violet-500 dark:group-hover:bg-sky-500 group-hover:text-white transition-colors duration-300 ease-in-out">
@@ -291,7 +291,7 @@ export default async function Dashboard() {
             <Link
               key={house.name}
               href={house.href}
-              className="group flex flex-col p-5 py-10 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-300/50 dark:border-gray-700 hover:border-slate-100 dark:hover:border-sky-800 transition-all duration-300 ease-in-out hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.08)]"
+              className="group flex flex-col p-5 py-10 bg-white dark:bg-slate-800 shadow-sm rounded-xl border border-coop-200/50 dark:border-sky-500/20 hover:border-slate-100 dark:hover:border-sky-800 transition-all duration-300 ease-in-out hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.08)]"
             >
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-xl sm:text-2xl md:text-xl lg:text-xl font-semibold text-gray-600 dark:text-slate-200 group-hover:text-emerald-700 dark:group-hover:text-sky-400">

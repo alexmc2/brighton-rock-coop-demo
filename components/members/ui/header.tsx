@@ -19,12 +19,12 @@ export default function Header({
 
   return (
     <header
-      className={`sticky top-0 before:absolute before:inset-0 before:backdrop-blur-md max-lg:before:bg-white/90 dark:max-lg:before:bg-gray-800/90 before:-z-10 z-30 ${
+      className={`sticky top-0 before:absolute before:inset-0 before:backdrop-blur-md max-lg:before:bg-slate-50/90 dark:max-lg:before:bg-slate-900/90 before:-z-10 z-30 ${
         variant === 'v2' || variant === 'v3'
-          ? 'before:bg-white after:absolute after:h-px after:inset-x-0 after:top-full after:bg-gray-200 dark:after:bg-gray-700/60 after:-z-10'
-          : 'max-lg:shadow-sm lg:before:bg-gray-100/90 dark:lg:before:bg-gray-900/90'
-      } ${variant === 'v2' ? 'dark:before:bg-gray-800' : ''} ${
-        variant === 'v3' ? 'dark:before:bg-gray-900' : ''
+          ? 'before:bg-slate-50 dark:before:bg-slate-900 after:absolute after:h-px after:inset-x-0 after:top-full after:bg-slate-200 dark:after:bg-slate-700/60 after:-z-10'
+          : 'max-lg:shadow-sm lg:before:bg-slate-50/90 dark:lg:before:bg-slate-900/90'
+      } ${variant === 'v2' ? 'dark:before:bg-slate-900' : ''} ${
+        variant === 'v3' ? 'dark:before:bg-slate-900' : ''
       }`}
     >
       <div className="px-4 sm:px-6 lg:px-8">
@@ -32,14 +32,14 @@ export default function Header({
           className={`flex items-center justify-between h-16 ${
             variant === 'v2' || variant === 'v3'
               ? ''
-              : 'lg:border-b border-gray-200 dark:border-gray-700/60'
+              : ''
           }`}
         >
           {/* Header: Left side */}
           <div className="flex">
             {/* Hamburger button */}
             <button
-              className="text-gray-500 dark:text-slate-300 hover:text-gray-600 dark:hover:text-gray-400 lg:hidden"
+              className="text-slate-500 dark:text-slate-300 hover:text-slate-600 dark:hover:text-slate-400 lg:hidden"
               aria-controls="sidebar"
               aria-expanded={sidebarOpen}
               onClick={() => {
@@ -63,8 +63,8 @@ export default function Header({
           <div className="flex items-center space-x-3">
             <div>
               <button
-                className={`w-8 h-8 flex items-center justify-center hover:bg-gray-100 lg:hover:bg-gray-200 dark:hover:bg-gray-700/50 dark:lg:hover:bg-gray-800 rounded-full ml-3 ${
-                  searchModalOpen && 'bg-gray-200 dark:bg-gray-800'
+                className={`w-8 h-8 flex items-center justify-center hover:bg-slate-100 lg:hover:bg-slate-200 dark:hover:bg-slate-700/50 dark:lg:hover:bg-slate-800 rounded-full ml-3 ${
+                  searchModalOpen && 'bg-slate-200 dark:bg-slate-800'
                 }`}
                 onClick={() => {
                   setSearchModalOpen(true);

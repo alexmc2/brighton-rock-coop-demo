@@ -25,7 +25,7 @@ function CalendarContent() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 space-y-4 sm:space-y-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 space-y-4 sm:space-y-0">
         <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0">
           <CalendarTitle />
           <div className="sm:hidden">
@@ -62,7 +62,7 @@ function CalendarContent() {
 export default function Calendar({ initialEvents }: CalendarProps) {
   return (
     <CalendarProvider initialEvents={initialEvents}>
-      <div className="h-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+      <div className="h-full border-3 border-coop-500/50 dark:border-sky-500/50 rounded-lg overflow-hidden">
         <CalendarContent />
       </div>
       <EventModal />

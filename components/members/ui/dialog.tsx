@@ -42,7 +42,7 @@ const DialogContent = React.forwardRef<
         [
           'fixed left-[50%] top-[50%] z-50',
           'grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]',
-          'gap-4 border border-slate-200 bg-white p-6 shadow-lg duration-200',
+          'gap-4 border border-coop-200/50 bg-white p-6 shadow-lg duration-200',
           // Animations
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -51,7 +51,7 @@ const DialogContent = React.forwardRef<
           'data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
           // Responsive & Dark mode
           'sm:rounded-lg',
-          'dark:border-slate-800 dark:bg-slate-950',
+          'dark:border-sky-500/50 dark:bg-slate-800',
         ].join(' '),
         className
       )}

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export const revalidate = 0;
 
-  export default async function CalendarPage() {
+export default async function CalendarPage() {
   const today = new Date();
   const startDate = subMonths(today, 1);
   const endDate = addMonths(today, 36);
@@ -32,7 +32,7 @@ export const revalidate = 0;
           </div>
         </div>
       </div>
-      <div className="bg-white dark:bg-slate-900 rounded-lg shadow overflow-hidden min-h-[calc(100vh-12rem)]">
+      <div className="bg-white dark:bg-slate-800  rounded-lg ">
         <Calendar initialEvents={events} />
       </div>
     </div>

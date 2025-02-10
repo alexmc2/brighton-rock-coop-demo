@@ -31,7 +31,7 @@ interface PageProps {
 }
 
 export default async function GardenPage({ searchParams }: PageProps) {
-  const tab = (searchParams.tab as string) || 'projects';
+  const tab = (searchParams.tab as string) || 'jobs';
   const [tasks, projects] = await Promise.all([
     getGardenTasks(),
     getGardenProjects(),

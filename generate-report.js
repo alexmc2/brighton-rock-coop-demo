@@ -30,6 +30,15 @@ const TABLE_NAMES = [
   'social_events',
   'todo_comments',
   'todos',
+  'treasury_transaction_history',
+  'treasury_ledger_entries',
+  'treasury_monthly_category_totals',
+  'treasury_categories',
+  'treasury_transactions',
+  'treasury_transaction_splits',
+  'treasury_annual_budgets',
+  'treasury_monthly_balances',
+  'treasury_monthly_drafts',
 ];
 
 let allChanges = [];

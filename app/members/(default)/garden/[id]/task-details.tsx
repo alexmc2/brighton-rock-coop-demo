@@ -128,7 +128,7 @@ export default function TaskDetails({ task: initialTask }: TaskDetailsProps) {
         {
           event: '*',
           schema: 'public',
-          table: 'garden_task_participants',
+          table: 'demo_garden_task_participants',
           filter: `task_id=eq.${task.id}`,
         },
         fetchParticipants
@@ -340,7 +340,7 @@ export default function TaskDetails({ task: initialTask }: TaskDetailsProps) {
 
         {/* Participation Section */}
         <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
-          <div className="bg-slate-50 dark:bg-slate-900/90 rounded-lg p-4">
+          <div className="bg-slate-50 dark:bg-gray-900 /90 rounded-lg p-4">
             {/* Radios: helping / maybe / unavailable */}
             <div className="mb-6">
               <div className="flex flex-col sm:flex-row items-center gap-3">

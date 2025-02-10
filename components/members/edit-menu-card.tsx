@@ -1,21 +1,31 @@
-'use client'
+'use client';
 
-import { Menu, MenuButton, MenuItems, MenuItem, Transition } from '@headlessui/react'
-import Link from 'next/link'
+import {
+  Menu,
+  MenuButton,
+  MenuItems,
+  MenuItem,
+  Transition,
+} from '@headlessui/react';
+import Link from 'next/link';
 
 export default function EditMenuCard({
   align,
   className = '',
 }: React.HTMLAttributes<HTMLDivElement> & {
-  align?: 'left' | 'right'
-  className?: string
+  align?: 'left' | 'right';
+  className?: string;
 }) {
   return (
     <Menu as="div" className={`relative inline-flex ${className}`}>
       {({ open }) => (
         <>
           <MenuButton
-            className={`rounded-full ${open ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300' : 'bg-white dark:bg-gray-700 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300'}`}
+            className={`rounded-full ${
+              open
+                ? 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-300'
+                : 'bg-white dark:bg-slate-700 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300'
+            }`}
           >
             <span className="sr-only">Menu</span>
             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">
@@ -26,7 +36,9 @@ export default function EditMenuCard({
           </MenuButton>
           <Transition
             as="div"
-            className={`origin-top-right z-10 absolute top-full min-w-[9rem] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 py-1.5 rounded-lg shadow-lg overflow-hidden mt-1 ${align === 'right' ? 'right-0' : 'left-0'}`}
+            className={`origin-top-right z-10 absolute top-full min-w-[9rem] bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700/60 py-1.5 rounded-lg shadow-lg overflow-hidden mt-1 ${
+              align === 'right' ? 'right-0' : 'left-0'
+            }`}
             enter="transition ease-out duration-200 transform"
             enterFrom="opacity-0 -translate-y-2"
             enterTo="opacity-100 translate-y-0"
@@ -37,29 +49,48 @@ export default function EditMenuCard({
             <MenuItems as="ul" className="focus:outline-none">
               <MenuItem as="li">
                 {({ active }) => (
-                  <Link className={`font-medium text-sm flex py-1 px-3 ${active ? 'text-gray-800 dark:text-gray-200' : 'text-gray-600 dark:text-gray-300'}`} href="#0">
+                  <Link
+                    className={`font-medium text-sm flex py-1 px-3 ${
+                      active
+                        ? 'text-gray-800 dark:text-gray-200'
+                        : 'text-gray-600 dark:text-gray-300'
+                    }`}
+                    href="#0"
+                  >
                     Option 1
                   </Link>
                 )}
               </MenuItem>
               <MenuItem as="li">
                 {({ active }) => (
-                  <Link className={`font-medium text-sm flex py-1 px-3 ${active ? 'text-gray-800 dark:text-gray-200' : 'text-gray-600 dark:text-gray-300'}`} href="#0">
+                  <Link
+                    className={`font-medium text-sm flex py-1 px-3 ${
+                      active
+                        ? 'text-gray-800 dark:text-gray-200'
+                        : 'text-gray-600 dark:text-gray-300'
+                    }`}
+                    href="#0"
+                  >
                     Option 2
                   </Link>
                 )}
               </MenuItem>
               <MenuItem as="li">
                 {({ active }) => (
-                  <Link className={`font-medium text-sm flex py-1 px-3 ${active ? 'text-red-600' : 'text-red-500'}`} href="#0">
+                  <Link
+                    className={`font-medium text-sm flex py-1 px-3 ${
+                      active ? 'text-red-600' : 'text-red-500'
+                    }`}
+                    href="#0"
+                  >
                     Remove
                   </Link>
                 )}
-              </MenuItem>                            
+              </MenuItem>
             </MenuItems>
           </Transition>
         </>
       )}
     </Menu>
-  )
+  );
 }

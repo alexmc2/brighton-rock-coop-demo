@@ -360,7 +360,7 @@ export default function Sidebar({
               </span>
             </h3>
             <ul className="mt-3">
-              <SidebarLinkGroup
+              {/* <SidebarLinkGroup
                 open={segments.includes('/members/components-library')}
               >
                 {(handleClick, open) => {
@@ -397,7 +397,7 @@ export default function Sidebar({
                               Components
                             </span>
                           </div>
-                          {/* Icon */}
+                         
                           <div className="flex shrink-0 ml-2">
                             <svg
                               className={`w-3 h-3 shrink-0 ml-1 fill-current text-slate-400 dark:text-slate-400 ${
@@ -508,7 +508,7 @@ export default function Sidebar({
                     </>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> */}
               {/* Feature Requests */}
               <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 ${

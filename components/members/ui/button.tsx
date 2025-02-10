@@ -30,12 +30,12 @@ const buttonVariants = cva(
         outline: [
           'border border-slate-200 bg-white',
           'hover:bg-slate-100 hover:text-slate-900',
-          'dark:border-slate-800 dark:bg-gray-800',
+          'dark:border-slate-800 dark:bg-slate-800',
           'dark:hover:bg-slate-800 dark:hover:text-slate-50',
         ].join(' '),
         secondary: [
           'bg-slate-100 text-slate-900 hover:bg-slate-100/80',
-          'dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
+          'dark:bg-slate-700 dark:text-slate-50 dark:hover:bg-slate-900',
         ].join(' '),
         ghost: [
           'hover:bg-slate-100 hover:text-slate-900',
@@ -48,6 +48,7 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-10 px-4 py-2',
+        xs: 'h-7 px-3 py-1',
         sm: 'h-9 rounded-md px-3',
         lg: 'h-11 rounded-md px-8',
         icon: 'h-10 w-10',

@@ -40,7 +40,7 @@ const AlertDialogContent = React.forwardRef<
         [
           'fixed left-[50%] top-[50%] z-50',
           'grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]',
-          'gap-4 border bg-white dark:bg-gray-900 p-6 shadow-lg duration-200',
+          'gap-4 border border-coop-500 dark:border-sky-500 bg-white dark:bg-slate-900 p-6 shadow-lg duration-200',
           'data-[state=open]:animate-in data-[state=closed]:animate-out',
           'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
           'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -113,15 +113,18 @@ AlertDialogDescription.displayName =
 
 const AlertDialogAction = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Action>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action> & {
+    variant?: 'default' | 'delete';
+  }
+>(({ className, variant = 'default', ...props }, ref) => (
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
       [
         'inline-flex h-10 items-center justify-center rounded-md',
-        'bg-coop-500 text-white hover:bg-coop-600',
-        'dark:bg-sky-600 dark:text-white dark:hover:bg-sky-700',
+        variant === 'delete'
+          ? 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800'
+          : 'bg-coop-500 text-white hover:bg-coop-600 dark:bg-sky-600 dark:text-white dark:hover:bg-sky-700',
         'px-4 py-2 text-sm font-semibold',
         'ring-offset-background transition-colors',
         'focus-visible:outline-none focus-visible:ring-2',

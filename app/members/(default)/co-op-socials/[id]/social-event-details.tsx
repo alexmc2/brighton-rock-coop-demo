@@ -223,7 +223,7 @@ export default function SocialEventDetails({
             {event.title}
           </h2>
 
-          <div className="text-sm text-slate-500 dark:text-slate-500">
+          <div className="text-sm text-slate-500 dark:text-slate-400">
             Event created by{' '}
             {event.created_by_user.full_name || event.created_by_user.email} on{' '}
             {format(new Date(event.created_at), 'do MMMM, yyyy')}
@@ -232,7 +232,7 @@ export default function SocialEventDetails({
             Description
           </h3>
           {event.description && (
-            <p className="text-sm text-slate-600 dark:text-slate-300 mt-3">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-3">
               {event.description}
             </p>
           )}
@@ -258,7 +258,7 @@ export default function SocialEventDetails({
                 <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                   Start Time
                 </h3>
-                <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+                <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                   <Clock className="w-4 h-4 mr-2" />
                   {formatTime(event.start_time)}
                 </div>
@@ -270,7 +270,7 @@ export default function SocialEventDetails({
                 <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                   Duration
                 </h3>
-                <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+                <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                   <Clock className="w-4 h-4 mr-2" />
                   {formatEventDuration(event.duration)}
                 </div>
@@ -282,7 +282,7 @@ export default function SocialEventDetails({
                 <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                   Location
                 </h3>
-                <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+                <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                   <MapPin className="w-4 h-4 mr-2" />
                   {event.location}
                 </div>
@@ -296,7 +296,7 @@ export default function SocialEventDetails({
             <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Going
             </h3>
-            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
               <Users className="w-4 h-4 mr-2" />
               {activeParticipantCount}{' '}
               {activeParticipantCount === 1 ? 'person going' : 'people going'}
@@ -310,7 +310,7 @@ export default function SocialEventDetails({
             <div className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Event Created
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               {format(new Date(event.created_at), 'PPp')}
             </p>
           </div>
@@ -318,7 +318,7 @@ export default function SocialEventDetails({
             <div className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Last Updated
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               {format(new Date(event.updated_at), 'PPp')}
             </p>
           </div>
@@ -327,7 +327,7 @@ export default function SocialEventDetails({
         {/* Participants Section */}
         {event.open_to_everyone && (
           <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
-            <div className="bg-slate-50 dark:bg-slate-900/90 rounded-lg p-4">
+            <div className="bg-slate-50 dark:bg-slate-900 /90 rounded-lg p-4">
               <div className="mb-6">
                 <div className="flex flex-col sm:flex-row items-center gap-3">
                   <RadioGroup

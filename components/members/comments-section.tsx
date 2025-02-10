@@ -303,7 +303,7 @@ export default function CommentSection<T extends BaseComment>({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg">
+    <div className="bg-white dark:bg-slate-800 border border-coop-200/50 dark:border-sky-500/20 rounded-lg">
       <div className="px-5 py-4">
         <h2 className="font-semibold text-slate-600 dark:text-slate-100 mb-4">
           Comments and Updates
@@ -363,7 +363,7 @@ export default function CommentSection<T extends BaseComment>({
                   </form>
                 ) : (
                   <>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
                       <div className="text-sm font-medium text-slate-700 dark:text-slate-100">
                         {comment.user?.full_name || comment.user?.email}
                       </div>
@@ -399,7 +399,7 @@ export default function CommentSection<T extends BaseComment>({
                     )}
 
                     {/* Reactions */}
-                    <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                    <div className="mt-3 flex flex-wrap items-center gap-1.5">
                       <div className="flex flex-wrap items-center gap-1.5">
                         <Popover
                           open={showEmojiPicker === comment.id}
@@ -536,7 +536,7 @@ export default function CommentSection<T extends BaseComment>({
               id="content"
               rows={3}
               required
-              className="mt-1 block w-full"
+              className="mt-1 block w-full dark:bg-slate-800"
               placeholder="Add a comment..."
             />
           </div>

@@ -15,7 +15,7 @@ export default function ShopPage() {
       {/* Placeholder content */}
       <div className="border border-slate-200 dark:border-slate-700 rounded-sm p-6">
         <div className="text-slate-800 dark:text-slate-100">
-          Shop management features coming soon
+          Shop management features coming soon...
         </div>
       </div>
     </div>

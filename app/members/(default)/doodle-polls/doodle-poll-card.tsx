@@ -83,7 +83,7 @@ const categoryColors: Record<DoodleEventType, string> = {
   development_event:
     'bg-emerald-100 text-emerald-800 dark:bg-emerald-600/30 dark:text-emerald-200',
   Miscellaneous:
-    'bg-gray-100 text-gray-800 dark:bg-gray-600/30 dark:text-gray-200',
+    'bg-gray-100 text-gray-800 dark:bg-slate-600/30 dark:text-gray-200',
 };
 
 const DoodlePollCard: React.FC<DoodlePollCardProps> = ({ poll }) => {

@@ -96,7 +96,7 @@ export default function ProjectDetails({
         {
           event: '*',
           schema: 'public',
-          table: 'garden_project_participants',
+          table: 'demo_garden_project_participants',
           filter: `project_id=eq.${project.id}`,
         },
         () => {
@@ -123,7 +123,7 @@ export default function ProjectDetails({
         {
           event: '*',
           schema: 'public',
-          table: 'garden_project_reports',
+          table: 'demo_garden_project_reports',
           filter: `project_id=eq.${project.id}`,
         },
         async () => {
@@ -326,7 +326,7 @@ export default function ProjectDetails({
 
       {/* Participation Section */}
       <Card className="p-4 sm:p-6 mt-6">
-        <div className="bg-slate-50 dark:bg-slate-900/90 rounded-lg p-4">
+        <div className="bg-slate-50 dark:bg-slate-900 /90 rounded-lg p-4">
           {/* Radios: helping / maybe / unavailable */}
           <div className="mb-6">
             <div className="flex flex-col sm:flex-row items-center gap-3">

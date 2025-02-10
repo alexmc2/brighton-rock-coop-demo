@@ -24,13 +24,10 @@ export default function TodoHeader({ todo }: TodoHeaderProps) {
       </div>
 
       <div className="flex flex-col gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">
-            {todo.title}
-          </h1>
+     
           <TodoActions todo={todo} />
         </div>
       </div>
-    </div>
+
   );
 }

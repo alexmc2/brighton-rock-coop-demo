@@ -36,7 +36,7 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
           leaveFrom="opacity-100 translate-y-0"
           leaveTo="opacity-0 translate-y-4"
         >
-          <DialogPanel className="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700/60 overflow-auto max-w-2xl w-full max-h-full rounded-lg shadow-lg">
+          <DialogPanel className="bg-white dark:bg-slate-800 border border-transparent dark:border-gray-700/60 overflow-auto max-w-2xl w-full max-h-full rounded-lg shadow-lg">
             {/* Search form */}
             <form className="border-b border-gray-200 dark:border-gray-700/60">
               <div className="relative">
@@ -45,7 +45,7 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                 </label>
                 <input
                   id="search-modal"
-                  className="w-full dark:text-gray-300 bg-white dark:bg-gray-800 border-0 focus:ring-transparent placeholder-gray-400 dark:placeholder-gray-500 appearance-none py-3 pl-10 pr-4"
+                  className="w-full dark:text-gray-300 bg-white dark:bg-slate-800 border-0 focus:ring-transparent placeholder-gray-400 dark:placeholder-gray-500 appearance-none py-3 pl-10 pr-4"
                   type="search"
                   placeholder="Search Functionality Coming Soon…"
                 />
@@ -75,7 +75,12 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
                       href="/members/calendar?category=P4P+Visit"
                     >
-                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                      <svg
+                        className="fill-current text-gray-400 shrink-0 mr-3"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
                         <path d="M15 2h-2V0h-2v2H9V0H7v2H5V0H3v2H1a1 1 0 00-1 1v12a1 1 0 001 1h14a1 1 0 001-1V3a1 1 0 00-1-1zm-1 12H2V6h12v8z" />
                       </svg>
                       <span>
@@ -91,7 +96,12 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
                       href="/members/garden?area=Front+Garden"
                     >
-                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                      <svg
+                        className="fill-current text-gray-400 shrink-0 mr-3"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
                         <path d="M8 15A7 7 0 118 1a7 7 0 010 14zm0-1.5a5.5 5.5 0 100-11 5.5 5.5 0 000 11zm-1-4.25L4.5 6.5l1-1L8 8l4.5-4.5 1 1L8 9.75l-1-1z" />
                       </svg>
                       <span>
@@ -107,11 +117,17 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
                       href="/members/maintenance?status=urgent"
                     >
-                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                      <svg
+                        className="fill-current text-gray-400 shrink-0 mr-3"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
                         <path d="M8 0a8 8 0 110 16A8 8 0 018 0zm0 14A6 6 0 108 2a6 6 0 000 12z" />
                       </svg>
                       <span>
-                        <span className="font-medium">Urgent Maintenance</span> -{' '}
+                        <span className="font-medium">Urgent Maintenance</span>{' '}
+                        -{' '}
                         <span className="text-gray-600 dark:text-gray-400">
                           Open Requests
                         </span>
@@ -123,11 +139,17 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
                       href="/members/doodle-polls?type=social_event"
                     >
-                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                      <svg
+                        className="fill-current text-gray-400 shrink-0 mr-3"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
                         <path d="M14 0H2c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h8l5-5V1c0-.6-.4-1-1-1zM3 2h10v8H9v4H3V2z" />
                       </svg>
                       <span>
-                        <span className="font-medium">Social Event Polls</span> -{' '}
+                        <span className="font-medium">Social Event Polls</span>{' '}
+                        -{' '}
                         <span className="text-gray-600 dark:text-gray-400">
                           Active Polls
                         </span>
@@ -147,7 +169,12 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
                       href="/members/bug-report"
                     >
-                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                      <svg
+                        className="fill-current text-gray-400 shrink-0 mr-3"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
                         <path d="M14 0H2c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h8l5-5V1c0-.6-.4-1-1-1zM3 2h10v8H9v4H3V2z" />
                       </svg>
                       <span>
@@ -163,7 +190,12 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
                       href="/members/development?type=project"
                     >
-                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                      <svg
+                        className="fill-current text-gray-400 shrink-0 mr-3"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
                         <path d="M14 0H2c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h8l5-5V1c0-.6-.4-1-1-1zM3 2h10v8H9v4H3V2z" />
                       </svg>
                       <span>

@@ -498,7 +498,7 @@ export default function DoodlePollActions({
                 {dateOptions.map((option) => (
                   <div
                     key={option.id}
-                    className="grid grid-cols-1 sm:grid-cols-[1fr,1fr,auto] gap-2 items-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
+                    className="grid grid-cols-1 sm:grid-cols-[1fr,1fr,auto] gap-2 items-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 "
                   >
                     <Input
                       type="date"

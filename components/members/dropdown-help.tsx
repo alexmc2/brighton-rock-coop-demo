@@ -16,7 +16,7 @@ export default function DropdownHelp({ align }: { align?: 'left' | 'right' }) {
         <>
           <MenuButton
             className={`w-8 h-8 flex items-center justify-center hover:bg-gray-100 lg:hover:bg-gray-200 dark:hover:bg-gray-700/50 dark:lg:hover:bg-gray-800 rounded-full ${
-              open && 'bg-gray-200 dark:bg-gray-800'
+              open && 'bg-gray-200 dark:bg-slate-800'
             }`}
           >
             <span className="sr-only">Need help?</span>
@@ -36,7 +36,7 @@ export default function DropdownHelp({ align }: { align?: 'left' | 'right' }) {
           </MenuButton>
           <Transition
             as="div"
-            className={`origin-top-right z-10 absolute top-full min-w-[11rem] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 py-1.5 rounded-lg shadow-lg overflow-hidden mt-1 ${
+            className={`origin-top-right z-10 absolute top-full min-w-[11rem] bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700/60 py-1.5 rounded-lg shadow-lg overflow-hidden mt-1 ${
               align === 'right' ? 'right-0' : 'left-0'
             }`}
             enter="transition ease-out duration-200 transform"

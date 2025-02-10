@@ -30,7 +30,7 @@ export default function VisitForm({
   return (
     <form onSubmit={onSubmit} className="w-full space-y-4">
       {/* Date and Time Inputs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
         <div className="space-y-2">
           <Label htmlFor="scheduled_date">Date</Label>
           <Input

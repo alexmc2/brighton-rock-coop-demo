@@ -38,6 +38,38 @@ const TabsList = React.forwardRef<
 ));
 TabsList.displayName = TabsPrimitive.List.displayName;
 
+const TabsListTreasury = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.List
+    ref={ref}
+    className={cn(
+      [
+        'inline-flex',
+        'h-12',
+        'items-center',
+        'justify-center',
+        'rounded-tl-lg rounded-tr-lg',
+        'border',
+        'border-3',
+        'shadow-sm',
+        'border-coop-200/80',
+        'dark:border-sky-500/50',
+        'bg-white',
+        'p-1',
+        'text-slate-500',
+        'dark:bg-slate-800',
+        'dark:text-slate-400',
+        'border-b-0',
+      ].join(' '),
+      className
+    )}
+    {...props}
+  />
+));
+TabsListTreasury.displayName = TabsPrimitive.List.displayName;
+
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
@@ -86,7 +118,6 @@ const TabsContent = React.forwardRef<
     ref={ref}
     className={cn(
       [
-        'mt-2',
         'ring-offset-white',
         'focus-visible:outline-none',
         'focus-visible:ring-2',
@@ -102,4 +133,4 @@ const TabsContent = React.forwardRef<
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
-export { Tabs, TabsList, TabsTrigger, TabsContent };
+export { Tabs, TabsList, TabsTrigger, TabsContent, TabsListTreasury };

@@ -100,7 +100,7 @@ export default function InitiativeDetails({
         {
           event: '*',
           schema: 'public',
-          table: 'event_participants',
+          table: 'demo_event_participants',
           filter: `event_id=eq.${initiative.id}`,
         },
         fetchParticipants
@@ -335,7 +335,7 @@ export default function InitiativeDetails({
         {initiative.initiative_type === 'event' &&
           initiative.open_to_everyone && (
             <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
-              <div className="bg-slate-50 dark:bg-slate-900/90 rounded-lg p-4">
+              <div className="bg-slate-50 dark:bg-slate-900 /90 rounded-lg p-4">
                 <div className="mb-6">
                   <div className="flex flex-col sm:flex-row items-center gap-3">
                     <RadioGroup

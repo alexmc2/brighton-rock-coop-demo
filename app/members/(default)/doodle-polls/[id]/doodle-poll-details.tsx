@@ -184,7 +184,7 @@ export default function DoodlePollDetails({
         </div>
 
         {/* Table Wrapper with horizontal scroll */}
-        <div className="border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900/80 overflow-x-auto">
+        <div className="border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 /80 overflow-x-auto">
           <Table className="min-w-[600px]">
             <TableHeader>
               <TableRow>
