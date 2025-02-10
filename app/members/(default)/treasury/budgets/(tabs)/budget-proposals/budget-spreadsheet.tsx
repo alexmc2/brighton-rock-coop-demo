@@ -626,7 +626,7 @@ export default function BudgetProposalsClient({
       )}
 
       <CardHeader>
-        <CardTitle className="text-lg">
+        <CardTitle className="sm:text-xl text-lg">
           {' '}
           Budget Proposals for the {selectedYear} Financial Year
         </CardTitle>

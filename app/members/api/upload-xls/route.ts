@@ -17,108 +17,68 @@ interface StatementRow {
   Balance: string | number;
 }
 
-// Common keywords for different types of transactions
-const EXPENSE_TYPES = {
-  Maintenance: [
-    'repair',
-    'maintenance',
-    'fix',
-    'service',
-    'cleaning',
-    'paint',
-    'plumbing',
-    'electrical',
-    'heating',
-  ],
-  Garden: [
-    'garden',
-    'plant',
-    'seed',
-    'compost',
-    'allotment',
-    'water',
-    'irrigation',
-  ],
-  Utilities: ['water', 'gas', 'electric', 'energy', 'utility', 'utilities'],
-  Insurance: ['insurance', 'insure', 'policy', 'cover'],
-  'Secretary and PPS': [
-    'secretary',
-    'pps',
-    'admin',
-    'administration',
-    'office',
-    'computer',
-    'software',
-    'training',
-  ],
-  'Bank Charges': ['bank charge', 'fee', 'interest'],
-  'Council Tax': ['council tax', 'ct payment'],
-  Donations: ['donation', 'contribute', 'contribution'],
-  'Rent to PFP': ['rent to', 'rent payment', 'pfp'],
-  Shop: ['shop stock', 'shop supplies', 'retail expense'],
-  Bees: ['bee', 'honey', 'hive'],
-  Contingency: ['contingency', 'emergency', 'unexpected'],
-  Investments: ['investment', 'shares', 'bond'],
-  'House Expenses': ['house', 'property', 'void', 'vacant'],
-  Miscellaneous: ['misc', 'other', 'general'],
-} as const;
-
-const INCOME_TYPES = {
-  Rent: [
-    'rent from',
-    'tenant payment',
-    'housing benefit',
-    'hb payment',
-    'rental income',
-  ],
-  Shop: ['shop sale', 'shop income', 'retail income'],
-  'Bank Account': ['transfer', 'bank credit', 'interest earned'],
-  'Other Income': [
-    'donation received',
-    'grant',
-    'funding',
-    'miscellaneous income',
-  ],
-} as const;
-
 // Helper function to identify transaction type from description
-function identifyTransactionType(desc: string, isExpense: boolean): string {
-  const lower = desc.toLowerCase();
+async function identifyTransactionType(
+  desc: string,
+  isExpense: boolean
+): Promise<string> {
+  // Get patterns from the database, ordered by confidence score (highest first)
+  const { data: patterns } = await supabaseAdmin
+    .from('demo_treasury_category_patterns')
+    .select('*')
+    .eq('is_expense', isExpense)
+    .order('confidence_score', { ascending: false });
 
-  if (isExpense) {
-    // Special case for house numbers
-    if (/house\s+\d+/i.test(desc)) {
-      return 'House Expenses';
-    }
-
-    for (const [category, keywords] of Object.entries(EXPENSE_TYPES)) {
-      if (keywords.some((keyword) => lower.includes(keyword))) {
-        return category;
-      }
-    }
-    return 'Miscellaneous';
-  } else {
-    for (const [category, keywords] of Object.entries(INCOME_TYPES)) {
-      if (keywords.some((keyword) => lower.includes(keyword))) {
-        return category;
-      }
-    }
-    return 'Other Income';
+  if (!patterns || patterns.length === 0) {
+    return isExpense ? 'Miscellaneous' : 'Other Income';
   }
+
+  // Normalize the description for matching
+  const normalizedDesc = desc.toUpperCase().trim();
+
+  // Try to match each pattern
+  for (const pattern of patterns) {
+    try {
+      const regex = new RegExp(pattern.pattern, 'i');
+      if (regex.test(normalizedDesc)) {
+        // Increment the match count for this pattern
+        await supabaseAdmin
+          .from('demo_treasury_category_patterns')
+          .update({
+            match_count: pattern.match_count + 1,
+            last_matched_at: new Date().toISOString(),
+          })
+          .eq('id', pattern.id);
+
+        return pattern.name;
+      }
+    } catch (err) {
+      console.error(`Invalid pattern ${pattern.pattern}:`, err);
+      continue;
+    }
+  }
+
+  // If no patterns match, return default category
+  return isExpense ? 'Miscellaneous' : 'Other Income';
 }
 
 // Helper function to ensure required categories exist
 async function ensureRequiredCategories() {
+  // Get all existing categories in one query
+  const { data: existingCategories } = await supabaseAdmin
+    .from('demo_treasury_categories')
+    .select('name');
+
+  const existingNames = new Set(existingCategories?.map((c) => c.name) || []);
+
   const requiredCategories = [
     // Income Categories
     {
-      id: '3ac1a597-0e2c-4e5a-b4a3-0d5cb6374f6a',
       name: 'Bank Account',
       description: 'Cash at bank',
       is_expense: false,
     },
     {
-      id: 'd9c937d9-c2a1-4399-9a84-9474d931ccfc',
       name: 'Other Income',
       description: 'Other income',
       is_expense: false,
@@ -135,7 +95,6 @@ async function ensureRequiredCategories() {
     },
     // Expense Categories
     {
-      id: 'a4e15bd4-bc7d-4bfc-b635-6fd47d4a3494',
       name: 'Miscellaneous',
       description: 'Other expenses',
       is_expense: true,
@@ -181,8 +140,8 @@ async function ensureRequiredCategories() {
       is_expense: true,
     },
     {
-      name: 'Rent to PFP',
-      description: 'Rent payments to PFP',
+      name: 'Rent',
+      description: 'Rent payments',
       is_expense: true,
     },
     {
@@ -212,50 +171,93 @@ async function ensureRequiredCategories() {
     },
   ];
 
-  for (const category of requiredCategories) {
-    const { data } = await supabaseAdmin
-      .from('demo_treasury_categories')
-      .select('id')
-      .eq('name', category.name)
-      .single();
+  // Filter to only categories that don't exist
+  const categoriesToCreate = requiredCategories.filter(
+    (cat) => !existingNames.has(cat.name)
+  );
 
-    if (!data) {
-      await supabaseAdmin.from('demo_treasury_categories').insert(category);
-    }
+  // Batch insert if any missing
+  if (categoriesToCreate.length > 0) {
+    await supabaseAdmin
+      .from('demo_treasury_categories')
+      .insert(categoriesToCreate);
   }
 }
+
+/** CHECK for existing transaction with identical date, paid_to, total_amount, single-split category/amount. */
+async function checkDuplicateTransaction(
+  date: Date,
+  paid_to: string,
+  amount: number,
+  categoryId: string
+) {
+  const dateStr = date.toISOString().slice(0, 10);
+
+  // Query with joins to get transactions and their splits in one go
+  const { data, error } = await supabaseAdmin
+    .from('demo_treasury_transactions')
+    .select(
+      `
+      id,
+      splits:demo_treasury_transaction_splits!inner(
+        category_id,
+        amount
+      )
+    `
+    )
+    .eq('date', dateStr)
+    .eq('paid_to', paid_to)
+    .eq('total_amount', amount)
+    .eq('demo_treasury_transaction_splits.category_id', categoryId)
+    .eq('demo_treasury_transaction_splits.amount', amount)
+    .single();
+
+  return !!data;
+}
+
+// Cache for categories to avoid repeated queries
+let categoriesCache:
+  | { id: string; name: string; is_expense: boolean }[]
+  | null = null;
 
 // Find an existing category that matches this transaction type
 async function findMatchingCategory(
   desc: string,
   isExpense: boolean
 ): Promise<string> {
-  // Changed return type to always return a string
-  const transactionType = identifyTransactionType(desc, isExpense);
-
-  const { data: categories } = await supabaseAdmin
-    .from('demo_treasury_categories')
-    .select('id, name')
-    .eq('is_expense', isExpense);
-
-  if (!categories) {
-    // Return default fallback categories
-    return isExpense
-      ? 'a4e15bd4-bc7d-4bfc-b635-6fd47d4a3494'
-      : 'd9c937d9-c2a1-4399-9a84-9474d931ccfc';
+  // Load categories cache if needed
+  if (!categoriesCache) {
+    const { data } = await supabaseAdmin
+      .from('demo_treasury_categories')
+      .select('id, name, is_expense');
+    categoriesCache = data || [];
   }
 
+  const transactionType = await identifyTransactionType(desc, isExpense);
+
+  // Filter categories by expense type
+  const relevantCategories = categoriesCache.filter(
+    (cat) => cat.is_expense === isExpense
+  );
+
   // Try to find a category matching our identified type
-  const match = categories.find(
+  const match = relevantCategories.find(
     (cat) => cat.name.toLowerCase() === transactionType.toLowerCase()
   );
 
-  return (
-    match?.id ||
-    (isExpense
-      ? 'a4e15bd4-bc7d-4bfc-b635-6fd47d4a3494'
-      : 'd9c937d9-c2a1-4399-9a84-9474d931ccfc')
+  if (match) {
+    return match.id;
+  }
+
+  // If no match found, return the default category
+  const defaultCategory = relevantCategories.find(
+    (cat) => cat.name === (isExpense ? 'Miscellaneous' : 'Other Income')
   );
+
+  if (!defaultCategory) {
+    throw new Error('Default categories not found in demo database');
+  }
+  return defaultCategory.id;
 }
 
 // Create a new category if needed
@@ -309,12 +311,35 @@ export async function POST(req: NextRequest) {
     console.log('...Using first sheet =>', firstSheet);
     const worksheet = workbook.Sheets[firstSheet];
 
+    // DEBUG: Log the sheet range and content
+    const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1');
+    console.log('...Sheet range =>', worksheet['!ref'], 'Decoded:', range);
+
     // Detect format by checking cell A1
     const a1Value = worksheet?.['A1']?.v;
     const isStatementFormat = a1Value === 'Date';
     console.log(
       '...Detected format:',
-      isStatementFormat ? 'Statement' : 'Original'
+      isStatementFormat ? 'Statement' : 'Original',
+      'A1 value =>',
+      a1Value
+    );
+
+    // Find the actual last row with data
+    let lastRow = 1;
+    for (let r = 1; r <= range.e.r; r++) {
+      const dateCell = worksheet[XLSX.utils.encode_cell({ r: r, c: 0 })];
+      const descCell = worksheet[XLSX.utils.encode_cell({ r: r, c: 1 })];
+      if (dateCell?.v || descCell?.v) {
+        lastRow = r;
+      }
+    }
+    console.log('...Last row with data =>', lastRow);
+
+    // Explicitly set the range to only include rows with data
+    worksheet['!ref'] = XLSX.utils.encode_range(
+      { r: range.s.r, c: range.s.c },
+      { r: lastRow, c: range.e.c }
     );
 
     // Parse based on detected format
@@ -344,7 +369,48 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    console.log('...rawRows =>', rawRows);
+    // Log the raw data before filtering
+    console.log(
+      '...Raw rows before filtering =>',
+      rawRows.map((row) => ({
+        date: row.Date,
+        desc: row.Description?.slice(0, 30) + '...',
+        wd: row.Withdrawals,
+        dp: row.Deposits,
+      }))
+    );
+
+    // Filter out invalid rows before processing
+    rawRows = rawRows.filter((row) => {
+      // Skip if it's a header row or empty
+      const rawDate = (row.Date || '').trim();
+      if (!rawDate || rawDate.toLowerCase() === 'date') {
+        return false;
+      }
+
+      // Skip if date is invalid
+      const dateObj = parseBankDate(rawDate);
+      if (isNaN(dateObj.getTime())) {
+        return false;
+      }
+
+      // Skip if both withdrawals and deposits are empty or invalid
+      const wd = parseFloatCell(row.Withdrawals);
+      const dp = parseFloatCell(row.Deposits);
+      if (wd === 0 && dp === 0) {
+        return false;
+      }
+
+      // Skip if description is empty or contains only whitespace
+      const desc = (row.Description || '').trim();
+      if (!desc) {
+        return false;
+      }
+
+      return true;
+    });
+
+    console.log('...Valid rows to process =>', rawRows.length);
 
     let importedCount = 0;
     let duplicatesCount = 0;
@@ -354,19 +420,8 @@ export async function POST(req: NextRequest) {
       const row = rawRows[i];
       console.log(`----- Row #${i + 1}`, row);
 
-      // Skip if it's a header row or empty
-      const rawDate = (row.Date || '').trim();
-      if (!rawDate || rawDate.toLowerCase() === 'date') {
-        console.log('.....Skipping header/blank row =>', rawDate);
-        continue;
-      }
-
-      // B) Parse the date. If invalid => skip
-      const dateObj = parseBankDate(rawDate);
-      if (isNaN(dateObj.getTime())) {
-        console.log('.....Invalid date => skip row =>', rawDate);
-        continue;
-      }
+      // B) Parse the date
+      const dateObj = parseBankDate(row.Date.trim());
       console.log('.....Parsed Date =>', dateObj.toISOString());
 
       // C) Parse withdrawals & deposits
@@ -446,47 +501,6 @@ export async function POST(req: NextRequest) {
     console.error('Error uploading XLS =>', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
-}
-
-/** CHECK for existing transaction with identical date, paid_to, total_amount, single-split category/amount. */
-async function checkDuplicateTransaction(
-  date: Date,
-  paid_to: string,
-  amount: number,
-  categoryId: string
-) {
-  // Find all tx with same date, paid_to, total_amount
-  const dateStr = date.toISOString().slice(0, 10); // compare as YYYY-MM-DD
-  const { data, error } = await supabaseAdmin
-    .from('demo_treasury_transactions')
-    .select(
-      `
-       id,
-       date,
-       paid_to,
-       total_amount,
-       splits:demo_treasury_transaction_splits(*)
-      `
-    )
-    .eq('date', dateStr)
-    .eq('paid_to', paid_to)
-    .eq('total_amount', amount);
-
-  if (error || !data) return false;
-  if (!data.length) return false;
-
-  // For each matched, check if it has exactly 1 split with same category + amount
-  for (const tx of data) {
-    if (
-      tx.splits?.length === 1 &&
-      tx.splits[0].category_id === categoryId &&
-      parseFloat(tx.splits[0].amount) === amount
-    ) {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 /**

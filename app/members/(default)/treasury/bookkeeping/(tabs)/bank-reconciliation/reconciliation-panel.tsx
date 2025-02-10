@@ -13,7 +13,14 @@ import { Label } from '@/components/members/ui/label';
 import { Input } from '@/components/members/ui/input';
 import { Button } from '@/components/members/ui/button';
 import { ScrollArea } from '@/components/members/ui/scroll-area';
-import { PlusCircle, Trash2, Save, AlertTriangle } from 'lucide-react';
+import {
+  PlusCircle,
+  Trash2,
+  Save,
+  AlertTriangle,
+  Settings,
+} from 'lucide-react';
+import Link from 'next/link';
 
 import {
   Select,
@@ -701,7 +708,21 @@ export default function ReconciliationPanel({
       )}
       <CardTreasury>
         <CardHeader>
-          <CardTitle className="text-lg">Bank Reconciliation</CardTitle>
+          <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
+            Bank Reconciliation
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 sm:h-10 sm:w-10"
+              asChild
+              title="Configure Transaction Patterns"
+            >
+              <Link href="/members/treasury/bookkeeping/category-patterns">
+                <Settings className="h-5 w-5 sm:h-6 sm:w-6" />
+                <span className="sr-only">Configure Transaction Patterns</span>
+              </Link>
+            </Button>
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {isMonthReconciled && (

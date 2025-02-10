@@ -184,7 +184,7 @@ Reconciled At: ${rec.reconciled_at ?? ''}`;
   return (
     <CardTreasury>
       <CardHeader>
-        <CardTitle className="text-md font-semibold">
+        <CardTitle className="text-lg font-semibold">
           Completed Bank Reconciliations
         </CardTitle>
       </CardHeader>

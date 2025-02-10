@@ -93,7 +93,7 @@ export default async function ReconciliationReportPage({
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                <CardTitle className="sm:text-xl text-lg font-semibold flex items-center gap-2">
                   Bank Reconciliation Report
                 </CardTitle>
                 <CardDescription className="text-sm mt-1">

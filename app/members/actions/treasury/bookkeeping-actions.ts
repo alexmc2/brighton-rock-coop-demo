@@ -2,6 +2,7 @@
 
 'use server';
 
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import supabaseAdmin from '@/lib/members/supabaseAdmin';
@@ -81,10 +82,11 @@ function revalidateAllPaths() {
 /////////////////////////////////////////////////////////////////////////////////
 export async function createTransaction(input: TransactionCreateInput) {
   try {
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -187,10 +189,11 @@ export async function updateTransaction(
   input: TransactionCreateInput
 ) {
   try {
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -324,11 +327,11 @@ export async function updateTransaction(
 // --------------------------------------------------------
 export async function deleteTransaction(transactionId: string) {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -356,11 +359,11 @@ export async function deleteTransaction(transactionId: string) {
 // --------------------------------------------------------
 export async function deleteAllTransactionsInMonth(month: Date) {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -493,11 +496,11 @@ export async function reconcileTransaction(
   isReconciled: boolean
 ) {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -529,11 +532,11 @@ export async function reconcileTransaction(
 // Modified upsertMonthlyBalance function
 export async function upsertMonthlyBalance(input: MonthlyBalanceCreateInput) {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -815,11 +818,11 @@ export async function deleteMonthlyBalance(monthlyBalanceId: string) {
   console.log('deleteMonthlyBalance: called with ID=', monthlyBalanceId);
 
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -944,11 +947,11 @@ export async function getAllReconciledTransactions() {
 // --------------------------------------------------------
 export async function reconcileAllTransactionsInMonth(month: Date) {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -1064,11 +1067,11 @@ export async function createCategory(input: {
   is_expense: boolean;
 }): Promise<ActionResponse<TreasuryCategory>> {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -1116,11 +1119,11 @@ export async function deleteCategory(
   categoryId: string
 ): Promise<ActionResponse<{ id: string }>> {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -1178,11 +1181,11 @@ export async function createCategoryPattern(
   input: CategoryPatternCreateInput
 ): Promise<ActionResponse<CategoryPattern>> {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -1249,11 +1252,11 @@ export async function updateCategoryPattern(
   updates: Partial<CategoryPatternCreateInput>
 ): Promise<ActionResponse<CategoryPattern>> {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -1279,11 +1282,11 @@ export async function deleteCategoryPattern(
   patternId: string
 ): Promise<ActionResponse<{ id: string }>> {
   try {
-    // Get the user from supabaseAdmin instead
+    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAdmin.auth.getUser();
+    } = await supabase.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 

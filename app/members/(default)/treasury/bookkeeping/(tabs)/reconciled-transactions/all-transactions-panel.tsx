@@ -152,9 +152,7 @@ export default function ReconciledTransactionsPanel({
     return (
       <CardTreasury>
         <CardHeader>
-          <CardTitle className="text-md font-semibold">
-            All Transactions
-          </CardTitle>
+          <CardTitle className="text-lg">All Transactions</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-slate-500">No transactions found.</p>
@@ -166,7 +164,7 @@ export default function ReconciledTransactionsPanel({
   return (
     <CardTreasury>
       <CardHeader>
-        <CardTitle className="text-md font-semibold flex items-center gap-2">
+        <CardTitle className="text-lg font-semibold flex items-center gap-2">
           All Transactions
         </CardTitle>
       </CardHeader>
