@@ -17,49 +17,190 @@ interface StatementRow {
   Balance: string | number;
 }
 
+// Initial patterns map for quick lookup
+interface PatternDefinition {
+  pattern: RegExp;
+  name: string;
+  is_expense: boolean;
+}
+
+// Compile patterns once at module level for better performance
+const PREDEFINED_PATTERNS: PatternDefinition[] = [
+  // Utilities
+  {
+    pattern: /(?:EDF ENERGY|BRITISH GAS|SOUTHERN WATER)/i,
+    name: 'Utilities',
+    is_expense: true,
+  },
+  // Garden
+  {
+    pattern: /(?:GARDEN CENTRE|IRRIGATION SUPPLIES|ALLOTMENT SUPPLIES)/i,
+    name: 'Garden',
+    is_expense: true,
+  },
+  // Maintenance
+  {
+    pattern:
+      /(?:ELECTRICAL WORKS|PLUMBING SERVICES|CLEANING SERVICE|HARDWARE STORE|HOUSE (?:MAINTENANCE|REPAIRS))/i,
+    name: 'Maintenance',
+    is_expense: true,
+  },
+  // Council Tax
+  {
+    pattern: /COUNCIL TAX/i,
+    name: 'Council Tax',
+    is_expense: true,
+  },
+  // Admin/Office
+  {
+    pattern: /(?:SOFTWARE SUBSCRIPTION|OFFICE SUPPLIES|TRAINING COURSE)/i,
+    name: 'Secretary and PPS',
+    is_expense: true,
+  },
+  // Shop
+  {
+    pattern: /(?:SHOP STOCK|RETAIL SUPPLIES)/i,
+    name: 'Shop',
+    is_expense: true,
+  },
+  // Bees
+  {
+    pattern: /(?:BEE EQUIPMENT|BEEKEEPING SUPPLIES)/i,
+    name: 'Bees',
+    is_expense: true,
+  },
+  // Insurance
+  {
+    pattern: /(?:INSURANCE|LIABILITY INSURANCE|BUILDING INSURANCE)/i,
+    name: 'Insurance',
+    is_expense: true,
+  },
+  // Rent payments
+  {
+    pattern: /SOUTH HOUSING.*RENT/i,
+    name: 'Rent',
+    is_expense: true,
+  },
+];
+
+// Cache for database patterns
+let dbPatternsCache: {
+  patterns: any[] | null;
+  lastFetched: number;
+} = {
+  patterns: null,
+  lastFetched: 0,
+};
+
 // Helper function to identify transaction type from description
 async function identifyTransactionType(
   desc: string,
   isExpense: boolean
 ): Promise<string> {
-  // Get patterns from the database, ordered by confidence score (highest first)
-  const { data: patterns } = await supabaseAdmin
-    .from('demo_treasury_category_patterns')
-    .select('*')
-    .eq('is_expense', isExpense)
-    .order('confidence_score', { ascending: false });
-
-  if (!patterns || patterns.length === 0) {
-    return isExpense ? 'Miscellaneous' : 'Other Income';
-  }
+  console.log(
+    `[identifyTransactionType] Starting for desc="${desc}", isExpense=${isExpense}`
+  );
 
   // Normalize the description for matching
   const normalizedDesc = desc.toUpperCase().trim();
 
-  // Try to match each pattern
-  for (const pattern of patterns) {
-    try {
-      const regex = new RegExp(pattern.pattern, 'i');
-      if (regex.test(normalizedDesc)) {
-        // Increment the match count for this pattern
-        await supabaseAdmin
-          .from('demo_treasury_category_patterns')
-          .update({
-            match_count: pattern.match_count + 1,
-            last_matched_at: new Date().toISOString(),
-          })
-          .eq('id', pattern.id);
-
-        return pattern.name;
-      }
-    } catch (err) {
-      console.error(`Invalid pattern ${pattern.pattern}:`, err);
-      continue;
+  // 1. Check predefined patterns first (fastest)
+  for (const pattern of PREDEFINED_PATTERNS) {
+    if (
+      pattern.is_expense === isExpense &&
+      pattern.pattern.test(normalizedDesc)
+    ) {
+      console.log(
+        `[identifyTransactionType] Matched predefined pattern => "${pattern.name}"`
+      );
+      return pattern.name;
     }
   }
 
-  // If no patterns match, return default category
-  return isExpense ? 'Miscellaneous' : 'Other Income';
+  // 2. Check for RENT suffix for income transactions
+  if (!isExpense && normalizedDesc.endsWith('RENT')) {
+    console.log('[identifyTransactionType] Matched RENT suffix => "Rent"');
+    return 'Rent';
+  }
+
+  // 3. Check database patterns (if any)
+  // Only fetch from DB if cache is older than 5 minutes
+  const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+  const now = Date.now();
+
+  if (
+    !dbPatternsCache.patterns ||
+    now - dbPatternsCache.lastFetched > CACHE_TTL
+  ) {
+    console.log('[identifyTransactionType] Refreshing patterns cache');
+    const { data: patterns, error } = await supabaseAdmin
+      .from('demo_treasury_category_patterns')
+      .select('*')
+      .eq('is_expense', isExpense)
+      .order('confidence_score', { ascending: false });
+
+    if (error) {
+      console.error(
+        '[identifyTransactionType] Error fetching patterns:',
+        error
+      );
+    } else {
+      dbPatternsCache = {
+        patterns: patterns || [],
+        lastFetched: now,
+      };
+    }
+  }
+
+  // Check cached database patterns
+  if (dbPatternsCache.patterns && dbPatternsCache.patterns.length > 0) {
+    for (const pattern of dbPatternsCache.patterns) {
+      try {
+        const regex = new RegExp(pattern.pattern, 'i');
+        if (regex.test(normalizedDesc)) {
+          // Increment the match count asynchronously (don't wait for it)
+          Promise.resolve(
+            supabaseAdmin
+              .from('demo_treasury_category_patterns')
+              .update({
+                match_count: pattern.match_count + 1,
+                last_matched_at: new Date().toISOString(),
+              })
+              .eq('id', pattern.id)
+          )
+            .then(() => {
+              console.log(
+                `[identifyTransactionType] Updated pattern match count for ${pattern.id}`
+              );
+            })
+            .catch((err: Error) => {
+              console.error(
+                '[identifyTransactionType] Error updating pattern match count:',
+                err
+              );
+            });
+
+          console.log(
+            `[identifyTransactionType] Matched DB pattern => "${pattern.name}"`
+          );
+          return pattern.name;
+        }
+      } catch (err) {
+        console.error(
+          `[identifyTransactionType] Invalid pattern "${pattern.pattern}":`,
+          err
+        );
+        continue;
+      }
+    }
+  }
+
+  // 4. Default fallback
+  const defaultCategory = isExpense ? 'Miscellaneous' : 'Other Income';
+  console.log(
+    `[identifyTransactionType] No matches found => default "${defaultCategory}"`
+  );
+  return defaultCategory;
 }
 
 // Helper function to ensure required categories exist

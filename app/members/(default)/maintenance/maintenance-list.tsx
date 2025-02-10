@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/members/ui/select';
+import { Card, CardContent } from '@/components/members/ui/card';
 
 interface MaintenanceListProps {
   requests: MaintenanceRequestWithDetails[];
@@ -240,131 +241,133 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
       </div>
 
       {/* Maintenance Requests Table */}
-      <div className="bg-white dark:bg-slate-800 shadow-sm rounded-lg border border-slate-200 dark:border-slate-700">
+      <Card className="rounded-none">
         <div className="relative w-full">
           <div className="overflow-x-auto">
             <div className="inline-block min-w-full align-middle">
               <div className="overflow-hidden">
-                <Table className="min-w-[1000px] w-full divide-y divide-slate-200 dark:divide-slate-700 rounded-lg">
-                  <TableHeader className="bg-slate-50 dark:bg-slate-900/50 rounded-lg">
-                    <TableRow>
-                      <TableHead className="min-w-[180px] w-[18%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Title
-                      </TableHead>
-                      <TableHead className="min-w-[140px] w-[15%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        House
-                      </TableHead>
-                      <TableHead className="min-w-[100px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Status
-                      </TableHead>
-                      <TableHead className="min-w-[90px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Priority
-                      </TableHead>
-                      <TableHead className="min-w-[140px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Reported By
-                      </TableHead>
-                      <TableHead className="min-w-[140px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Assigned To
-                      </TableHead>
-                      <TableHead className="min-w-[100px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Date
-                      </TableHead>
-                      <TableHead className="min-w-[180px] w-[12%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Next P4P Visit
-                      </TableHead>
-                      <TableHead className="min-w-[80px] w-[5%] px-4 py-3 text-center text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Comments
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedRequests.map((request) => {
-                      const nextVisit = request.visits
-                        .filter(
-                          (v) =>
-                            !v.completed_at &&
-                            new Date(v.scheduled_date) > new Date()
-                        )
-                        .sort(
-                          (a, b) =>
-                            new Date(a.scheduled_date).getTime() -
-                            new Date(b.scheduled_date).getTime()
-                        )[0];
+                <Table className="min-w-[1000px] w-full divide-y divide-slate-200 dark:divide-slate-700">
+                  <CardContent className="pb-0">
+                    <TableHeader className="bg-white dark:bg-slate-800">
+                      <TableRow className="">
+                        <TableHead className="min-w-[180px] w-[18%] px-4 py-4 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          Title
+                        </TableHead>
+                        <TableHead className="min-w-[140px] w-[15%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          House
+                        </TableHead>
+                        <TableHead className="min-w-[100px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          Status
+                        </TableHead>
+                        <TableHead className="min-w-[90px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          Priority
+                        </TableHead>
+                        <TableHead className="min-w-[140px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          Reported By
+                        </TableHead>
+                        {/* <TableHead className="min-w-[140px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          Assigned To
+                        </TableHead> */}
+                        <TableHead className="min-w-[100px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          Date
+                        </TableHead>
+                        <TableHead className="min-w-[180px] w-[12%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          Next P4P Visit
+                        </TableHead>
+                        <TableHead className="min-w-[80px] w-[5%] px-4 py-3 text-center text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          Comments
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedRequests.map((request) => {
+                        const nextVisit = request.visits
+                          .filter(
+                            (v) =>
+                              !v.completed_at &&
+                              new Date(v.scheduled_date) > new Date()
+                          )
+                          .sort(
+                            (a, b) =>
+                              new Date(a.scheduled_date).getTime() -
+                              new Date(b.scheduled_date).getTime()
+                          )[0];
 
-                      return (
-                        <TableRow key={request.id}>
-                          <TableCell className="px-4 py-3">
-                            <Link
-                              href={`/members/maintenance/${request.id}`}
-                              className="font-medium text-coop-600 dark:text-sky-400 hover:text-coop-700 dark:hover:text-sky-500 truncate block max-w-[180px]"
-                              title={request.title}
-                            >
-                              {request.title}
-                            </Link>
-                          </TableCell>
-                          <TableCell className="px-4 py-3">
-                            {request.house.name}
-                          </TableCell>
-                          <TableCell className="px-4 py-3">
-                            <div
-                              className={`inline-flex font-medium rounded-full text-center px-2.5 py-0.5 ${getStatusColor(
-                                request.status
-                              )}`}
-                            >
-                              {request.status.charAt(0).toUpperCase() +
-                                request.status.slice(1).replace('_', ' ')}
-                            </div>
-                          </TableCell>
-                          <TableCell className="px-4 py-3">
-                            <div
-                              className={`inline-flex font-medium rounded-full text-center px-2.5 py-0.5 ${getPriorityColor(
-                                request.priority
-                              )}`}
-                            >
-                              {request.priority.charAt(0).toUpperCase() +
-                                request.priority.slice(1)}
-                            </div>
-                          </TableCell>
-                          <TableCell className="px-4 py-3">
-                            {request.reported_by_user.full_name ||
-                              request.reported_by_user.email}
-                          </TableCell>
-                          <TableCell className="px-4 py-3">
-                            {request.assigned_to_user?.full_name ||
-                              request.assigned_to_user?.email ||
-                              '-'}
-                          </TableCell>
-                          <TableCell className="px-4 py-3">
-                            {format(
-                              new Date(request.created_at),
-                              'MMM d, yyyy'
-                            )}
-                          </TableCell>
-                          <TableCell className="px-4 py-3">
-                            {nextVisit
-                              ? format(
-                                  new Date(nextVisit.scheduled_date),
-                                  'MMM d, yyyy h:mm a'
-                                )
-                              : '-'}
-                          </TableCell>
-                          <TableCell className="px-4 py-3 text-center">
-                            {request.comments.length}
+                        return (
+                          <TableRow key={request.id}>
+                            <TableCell className="px-4 py-3">
+                              <Link
+                                href={`/members/maintenance/${request.id}`}
+                                className="font-medium text-coop-600 dark:text-sky-400 hover:text-coop-700 dark:hover:text-sky-500 truncate block max-w-[180px]"
+                                title={request.title}
+                              >
+                                {request.title}
+                              </Link>
+                            </TableCell>
+                            <TableCell className="px-4 py-3">
+                              {request.house.name}
+                            </TableCell>
+                            <TableCell className="px-4 py-3">
+                              <div
+                                className={`inline-flex font-medium rounded-full text-center px-2.5 py-0.5 ${getStatusColor(
+                                  request.status
+                                )}`}
+                              >
+                                {request.status.charAt(0).toUpperCase() +
+                                  request.status.slice(1).replace('_', ' ')}
+                              </div>
+                            </TableCell>
+                            <TableCell className="px-4 py-3">
+                              <div
+                                className={`inline-flex font-medium rounded-full text-center px-2.5 py-0.5 ${getPriorityColor(
+                                  request.priority
+                                )}`}
+                              >
+                                {request.priority.charAt(0).toUpperCase() +
+                                  request.priority.slice(1)}
+                              </div>
+                            </TableCell>
+                            <TableCell className="px-4 py-3">
+                              {request.reported_by_user.full_name ||
+                                request.reported_by_user.email}
+                            </TableCell>
+                            {/* <TableCell className="px-4 py-3">
+                              {request.assigned_to_user?.full_name ||
+                                request.assigned_to_user?.email ||
+                                '-'}
+                            </TableCell> */}
+                            <TableCell className="px-4 py-3">
+                              {format(
+                                new Date(request.created_at),
+                                'MMM d, yyyy'
+                              )}
+                            </TableCell>
+                            <TableCell className="px-4 py-3">
+                              {nextVisit
+                                ? format(
+                                    new Date(nextVisit.scheduled_date),
+                                    'MMM d, yyyy h:mm a'
+                                  )
+                                : '-'}
+                            </TableCell>
+                            <TableCell className="px-4 py-3 text-center">
+                              {request.comments.length}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {paginatedRequests.length === 0 && (
+                        <TableRow>
+                          <TableCell
+                            colSpan={9}
+                            className="text-center py-8 text-slate-500 dark:text-slate-400 "
+                          >
+                            No maintenance requests found
                           </TableCell>
                         </TableRow>
-                      );
-                    })}
-                    {paginatedRequests.length === 0 && (
-                      <TableRow>
-                        <TableCell
-                          colSpan={9}
-                          className="text-center py-8 text-slate-500 dark:text-slate-400 "
-                        >
-                          No maintenance requests found
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
+                      )}
+                    </TableBody>
+                  </CardContent>
                 </Table>
               </div>
             </div>
@@ -419,7 +422,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
             </div>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

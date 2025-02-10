@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   createPatternAction,
   CategoryPattern,
+  getCategoriesAction,
 } from '@/app/members/actions/treasury/pattern-server-actions';
 import { Button } from '@/components/members/ui/button';
 import { Input } from '@/components/members/ui/input';
@@ -42,14 +43,43 @@ export function CreatePatternForm({
   const [categoryId, setCategoryId] = useState('');
   const [isExpense, setIsExpense] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [categories, setCategories] = useState<
+    Array<{ id: string; name: string; is_expense: boolean }>
+  >([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
+  useEffect(() => {
+    async function loadCategories() {
+      const result = await getCategoriesAction();
+      if (result.success && result.data) {
+        setCategories(result.data);
+      }
+      setIsLoadingCategories(false);
+    }
+    loadCategories();
+  }, []);
+
+  // Filter categories based on isExpense state
+  const filteredCategories = categories.filter(
+    (cat) => cat.is_expense === isExpense && cat.name !== 'Bank Account'
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    console.log('[CreatePatternForm] Starting form submission');
 
     try {
       // Validate the pattern is a valid regex
+      console.log('[CreatePatternForm] Validating regex pattern:', pattern);
       new RegExp(pattern, 'i');
+
+      console.log('[CreatePatternForm] Submitting pattern:', {
+        pattern,
+        description,
+        category_id: categoryId,
+        is_expense: isExpense,
+      });
 
       const result = await createPatternAction({
         pattern,
@@ -57,6 +87,8 @@ export function CreatePatternForm({
         category_id: categoryId,
         is_expense: isExpense,
       });
+
+      console.log('[CreatePatternForm] Submission result:', result);
 
       if (result.success && result.data) {
         onSuccess(result.data);
@@ -69,9 +101,14 @@ export function CreatePatternForm({
         // Close dialog
         onOpenChange(false);
       } else {
+        console.error(
+          '[CreatePatternForm] Failed to create pattern:',
+          result.error
+        );
         toast.error(result.error || 'Failed to create pattern');
       }
     } catch (err) {
+      console.error('[CreatePatternForm] Invalid regex pattern:', err);
       toast.error('Invalid regular expression pattern');
     } finally {
       setIsSubmitting(false);
@@ -110,31 +147,6 @@ export function CreatePatternForm({
               </div>
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
-              <Input
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="e.g. Match rent payments from tenants"
-                required
-              />
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="category">Category</Label>
-              <Select value={categoryId} onValueChange={setCategoryId}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {/* Categories will be populated here */}
-                  <SelectItem value="category1">Category 1</SelectItem>
-                  <SelectItem value="category2">Category 2</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
             <div className="flex items-center justify-between space-x-2">
               <div className="space-y-0.5">
                 <Label htmlFor="isExpense">Expense</Label>
@@ -145,14 +157,57 @@ export function CreatePatternForm({
               <Switch
                 id="isExpense"
                 checked={isExpense}
-                onCheckedChange={setIsExpense}
+                onCheckedChange={(checked) => {
+                  setIsExpense(checked);
+                  // Reset category selection when switching expense type
+                  setCategoryId('');
+                }}
                 className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted-foreground dark:data-[state=checked]:bg-sky-500 dark:data-[state=unchecked]:bg-muted-foreground"
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="category">Category</Label>
+              <Select
+                value={categoryId}
+                onValueChange={setCategoryId}
+                disabled={isLoadingCategories}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      isLoadingCategories
+                        ? 'Loading categories...'
+                        : 'Select a category'
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {filteredCategories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description">Description</Label>
+              <Input
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="e.g. Match rent payments from tenants"
+                required
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              disabled={isSubmitting || isLoadingCategories}
+            >
               {isSubmitting ? 'Creating...' : 'Create Pattern'}
             </Button>
           </DialogFooter>

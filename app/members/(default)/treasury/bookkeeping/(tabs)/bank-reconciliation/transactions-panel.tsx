@@ -147,7 +147,7 @@ export default function TransactionsPanel({
   return (
     <>
       {/* Filter + Actions (always visible) */}
-      <div className="sm:flex sm:justify-between sm:items-center py-4">
+      <div className="sm:flex sm:justify-between sm:items-center pb-6">
         <div className="flex items-center gap-2 sm:pb-2 pb-4">
           <div className="flex gap-2">
             <Button

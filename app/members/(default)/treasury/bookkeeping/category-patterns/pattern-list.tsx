@@ -40,6 +40,7 @@ export function PatternList({ initialPatterns }: PatternListProps) {
     null
   );
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const handleUpdatePattern = async (
     pattern: CategoryPattern,
@@ -116,6 +117,7 @@ export function PatternList({ initialPatterns }: PatternListProps) {
                   <TableCell>
                     <Badge
                       variant={pattern.is_expense ? 'destructive' : 'default'}
+                      size="xs"
                     >
                       {pattern.is_expense ? 'Expense' : 'Income'}
                     </Badge>
@@ -132,7 +134,10 @@ export function PatternList({ initialPatterns }: PatternListProps) {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Dialog>
+                    <Dialog
+                      open={isEditDialogOpen}
+                      onOpenChange={setIsEditDialogOpen}
+                    >
                       <DialogTrigger asChild>
                         <Button variant="ghost" size="sm">
                           Edit
@@ -184,6 +189,12 @@ export function PatternList({ initialPatterns }: PatternListProps) {
                             onClick={() => handleDeletePattern(pattern)}
                           >
                             Delete Pattern
+                          </Button>
+                          <Button
+                            variant="default"
+                            onClick={() => setIsEditDialogOpen(false)}
+                          >
+                            Save & Close
                           </Button>
                         </DialogFooter>
                       </DialogContent>

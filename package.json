@@ -33,6 +33,7 @@
     "@silevis/reactgrid": "^5.0.0-alpha.8",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/supabase-js": "^2.46.2",
+    "@tanstack/react-table": "^8.20.6",
     "@tiptap/extension-text-style": "^2.11.3",
     "@tiptap/pm": "^2.11.3",
     "@tiptap/react": "^2.11.3",
