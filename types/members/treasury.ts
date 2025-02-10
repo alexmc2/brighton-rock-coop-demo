@@ -197,3 +197,22 @@ export interface TransactionSplitRow {
     updated_at: string | null; // timestamp with time zone, default now
   };
 }
+
+export type CategoryPattern = {
+  id: string;
+  pattern: string;
+  name: string;
+  is_expense: boolean;
+  description?: string;
+  created_at: string;
+  updated_at: string;
+  match_count: number;
+  confidence_score: number;
+};
+
+export type CategoryPatternCreateInput = {
+  pattern: string;
+  name: string;
+  is_expense: boolean;
+  description?: string;
+};

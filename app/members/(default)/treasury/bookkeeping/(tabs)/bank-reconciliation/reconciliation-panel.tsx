@@ -1138,10 +1138,7 @@ export default function ReconciliationPanel({
                                     {categories
                                       .filter((cat) => {
                                         // Filter out the bank category
-                                        if (
-                                          cat.id ===
-                                          '3ac1a597-0e2c-4e5a-b4a3-0d5cb6374f6a'
-                                        )
+                                        if (cat.name === 'Bank Account')
                                           return false;
                                         // Show only categories matching the selected type
                                         return newCategoryType === 'expense'
@@ -1302,11 +1299,9 @@ function SelectCategory({
   categories: TreasuryCategory[];
   transactionType: 'payment' | 'receipt';
 }) {
-  const BANK_CATEGORY_ID = '3ac1a597-0e2c-4e5a-b4a3-0d5cb6374f6a';
-
   const relevant = categories.filter(
     (cat) =>
-      cat.id !== BANK_CATEGORY_ID &&
+      cat.name !== 'Bank Account' &&
       (transactionType === 'payment' ? cat.is_expense : !cat.is_expense)
   );
 

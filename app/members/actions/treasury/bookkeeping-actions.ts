@@ -2,7 +2,6 @@
 
 'use server';
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import supabaseAdmin from '@/lib/members/supabaseAdmin';
@@ -15,6 +14,8 @@ import type {
   MonthlyBalanceCreateInput,
   MonthlyDraftInput,
   ActionResponse,
+  CategoryPattern,
+  CategoryPatternCreateInput,
 } from '@/types/members/treasury';
 
 // Add new types for transaction history
@@ -80,13 +81,24 @@ function revalidateAllPaths() {
 /////////////////////////////////////////////////////////////////////////////////
 export async function createTransaction(input: TransactionCreateInput) {
   try {
-    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
+
+    // Get the bank category ID
+    const { data: bankCategory, error: bankCategoryError } = await supabaseAdmin
+      .from('demo_treasury_categories')
+      .select('id')
+      .eq('name', 'Bank Account')
+      .single();
+
+    if (bankCategoryError) throw bankCategoryError;
+    if (!bankCategory) throw new Error('Bank Account category not found');
+
+    const bankCategoryId = bankCategory.id;
 
     // 1) Insert the main transaction
     const { data: transaction, error: transactionError } = await supabaseAdmin
@@ -115,7 +127,6 @@ export async function createTransaction(input: TransactionCreateInput) {
     if (splitsError) throw splitsError;
 
     // 3) Insert ledger entries
-    const bankCategoryId = '3ac1a597-0e2c-4e5a-b4a3-0d5cb6374f6a';
     const ledgerEntries = input.splits.flatMap((split) => {
       if (input.type === 'receipt') {
         return [
@@ -176,13 +187,24 @@ export async function updateTransaction(
   input: TransactionCreateInput
 ) {
   try {
-    const supabase = createServerComponentClient({ cookies });
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
+
+    // Get the bank category ID
+    const { data: bankCategory, error: bankCategoryError } = await supabaseAdmin
+      .from('demo_treasury_categories')
+      .select('id')
+      .eq('name', 'Bank Account')
+      .single();
+
+    if (bankCategoryError) throw bankCategoryError;
+    if (!bankCategory) throw new Error('Bank Account category not found');
+
+    const bankCategoryId = bankCategory.id;
 
     // Get original transaction
     const { data: originalTx, error: fetchError } = await supabaseAdmin
@@ -245,7 +267,6 @@ export async function updateTransaction(
       .delete()
       .eq('transaction_id', transactionId);
 
-    const bankCategoryId = '3ac1a597-0e2c-4e5a-b4a3-0d5cb6374f6a';
     const ledgerEntries = input.splits.flatMap((split) => {
       if (input.type === 'receipt') {
         return [
@@ -303,11 +324,11 @@ export async function updateTransaction(
 // --------------------------------------------------------
 export async function deleteTransaction(transactionId: string) {
   try {
-    const supabase = createServerComponentClient({ cookies });
+    // Get the user from supabaseAdmin instead
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -335,11 +356,11 @@ export async function deleteTransaction(transactionId: string) {
 // --------------------------------------------------------
 export async function deleteAllTransactionsInMonth(month: Date) {
   try {
-    const supabase = createServerComponentClient({ cookies });
+    // Get the user from supabaseAdmin instead
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -472,11 +493,11 @@ export async function reconcileTransaction(
   isReconciled: boolean
 ) {
   try {
-    const supabase = createServerComponentClient({ cookies });
+    // Get the user from supabaseAdmin instead
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -508,11 +529,11 @@ export async function reconcileTransaction(
 // Modified upsertMonthlyBalance function
 export async function upsertMonthlyBalance(input: MonthlyBalanceCreateInput) {
   try {
-    const supabase = createServerComponentClient({ cookies });
+    // Get the user from supabaseAdmin instead
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -794,11 +815,11 @@ export async function deleteMonthlyBalance(monthlyBalanceId: string) {
   console.log('deleteMonthlyBalance: called with ID=', monthlyBalanceId);
 
   try {
-    const supabase = createServerComponentClient({ cookies });
+    // Get the user from supabaseAdmin instead
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -923,11 +944,11 @@ export async function getAllReconciledTransactions() {
 // --------------------------------------------------------
 export async function reconcileAllTransactionsInMonth(month: Date) {
   try {
-    const supabase = createServerComponentClient({ cookies });
+    // Get the user from supabaseAdmin instead
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -1043,11 +1064,11 @@ export async function createCategory(input: {
   is_expense: boolean;
 }): Promise<ActionResponse<TreasuryCategory>> {
   try {
-    const supabase = createServerComponentClient({ cookies });
+    // Get the user from supabaseAdmin instead
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -1095,11 +1116,11 @@ export async function deleteCategory(
   categoryId: string
 ): Promise<ActionResponse<{ id: string }>> {
   try {
-    const supabase = createServerComponentClient({ cookies });
+    // Get the user from supabaseAdmin instead
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
+    } = await supabaseAdmin.auth.getUser();
     if (authError) throw authError;
     if (!user) throw new Error('Not authenticated');
 
@@ -1142,6 +1163,168 @@ export async function deleteCategory(
     return { success: true, data: { id: categoryId } };
   } catch (err) {
     console.error('Error deleting category:', err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
+}
+
+// --------------------------------------------------------
+// CATEGORY PATTERN MANAGEMENT
+// --------------------------------------------------------
+
+export async function createCategoryPattern(
+  input: CategoryPatternCreateInput
+): Promise<ActionResponse<CategoryPattern>> {
+  try {
+    // Get the user from supabaseAdmin instead
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAdmin.auth.getUser();
+    if (authError) throw authError;
+    if (!user) throw new Error('Not authenticated');
+
+    // Check if pattern already exists
+    const { data: existing } = await supabaseAdmin
+      .from('demo_treasury_category_patterns')
+      .select('id')
+      .ilike('pattern', input.pattern)
+      .single();
+
+    if (existing) {
+      return {
+        success: false,
+        error: 'A pattern with this text already exists',
+      };
+    }
+
+    const { data, error } = await supabaseAdmin
+      .from('demo_treasury_category_patterns')
+      .insert({
+        pattern: input.pattern,
+        name: input.name,
+        description: input.description,
+        is_expense: input.is_expense,
+        match_count: 0,
+        confidence_score: 1.0,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err) {
+    console.error('Error creating category pattern:', err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
+}
+
+export async function getCategoryPatterns(): Promise<
+  ActionResponse<CategoryPattern[]>
+> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('demo_treasury_category_patterns')
+      .select('*')
+      .order('match_count', { ascending: false });
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err) {
+    console.error('Error fetching category patterns:', err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
+}
+
+export async function updateCategoryPattern(
+  patternId: string,
+  updates: Partial<CategoryPatternCreateInput>
+): Promise<ActionResponse<CategoryPattern>> {
+  try {
+    // Get the user from supabaseAdmin instead
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAdmin.auth.getUser();
+    if (authError) throw authError;
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await supabaseAdmin
+      .from('demo_treasury_category_patterns')
+      .update(updates)
+      .eq('id', patternId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err) {
+    console.error('Error updating category pattern:', err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
+}
+
+export async function deleteCategoryPattern(
+  patternId: string
+): Promise<ActionResponse<{ id: string }>> {
+  try {
+    // Get the user from supabaseAdmin instead
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAdmin.auth.getUser();
+    if (authError) throw authError;
+    if (!user) throw new Error('Not authenticated');
+
+    const { error } = await supabaseAdmin
+      .from('demo_treasury_category_patterns')
+      .delete()
+      .eq('id', patternId);
+
+    if (error) throw error;
+    return { success: true, data: { id: patternId } };
+  } catch (err) {
+    console.error('Error deleting category pattern:', err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
+}
+
+// --------------------------------------------------------
+// CATEGORY PATTERN LEARNING
+// --------------------------------------------------------
+
+export async function incrementPatternMatch(
+  patternId: string
+): Promise<ActionResponse<CategoryPattern>> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('demo_treasury_category_patterns')
+      .update({
+        match_count: supabaseAdmin.rpc('increment'),
+        confidence_score: supabaseAdmin.rpc('calculate_confidence_score'),
+      })
+      .eq('id', patternId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err) {
+    console.error('Error incrementing pattern match:', err);
     return {
       success: false,
       error: err instanceof Error ? err.message : String(err),

@@ -1,6 +1,0 @@
-Database Reference Changes Report
-================================
-
-
-Total changes found: 0
-Files affected: 0
