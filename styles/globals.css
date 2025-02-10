@@ -66,25 +66,31 @@
   }
 }
 
-/* Narrow scrollbar styles */
-html ::-webkit-scrollbar {
-  width: 2px !important; /* Ensures it's set to 2px */
-  height: 2px !important; /* For horizontal scrollbars */
-}
-
-html ::-webkit-scrollbar-track {
-  background: var(--primary) !important; /* Matches theme background */
-}
-
-html ::-webkit-scrollbar-thumb {
-  background-color: var(--primary) !important; /* Matches theme foreground */
-  border-radius: 2px !important;
-  border: 1px solid var(--primary) !important; /* Spacing around the thumb */
-}
-
+/* Force scrollbar to be always present */
 html {
-  scrollbar-width: thin; /* Narrow scrollbar for Firefox */
-  scrollbar-color: var(--primary) var(--primary) !important; /* Thumb and track colors */
+  overflow-y: scroll;
+}
+
+/* Narrow scrollbar styles */
+::-webkit-scrollbar {
+  width: 2px !important;
+  height: 2px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary) !important;
+  border-radius: 2px !important;
+  border: 1px solid var(--primary) !important;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--primary);
 }
 
 * {

@@ -24,6 +24,9 @@
     @apply text-4xl;
   }
 }
+body {
+  overflow-y: scroll;
+}
 
 /* Buttons */
 .btn,
@@ -63,7 +66,7 @@ input[type='search']::-webkit-search-results-decoration {
 .form-select,
 .form-checkbox,
 .form-radio {
-  @apply bg-white dark:bg-gray-900/30 border focus:ring-0 focus:ring-offset-0 dark:disabled:bg-gray-700/30 dark:disabled:border-gray-700 dark:disabled:hover:border-gray-700;
+  @apply bg-white dark:bg-slate-900/30 border focus:ring-0 focus:ring-offset-0 dark:disabled:bg-gray-700/30 dark:disabled:border-gray-700 dark:disabled:hover:border-gray-700;
 }
 
 .form-checkbox {
@@ -120,21 +123,20 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .form-switch input[type='checkbox']:disabled + label {
-  @apply cursor-not-allowed bg-gray-100 dark:bg-gray-700/20 border border-gray-200 dark:border-gray-700/60;
+  @apply cursor-not-allowed bg-gray-100 dark:bg-slate-700/20 border border-gray-200 dark:border-gray-700/60;
 }
 
 .form-switch input[type='checkbox']:disabled + label > span:first-child {
-  @apply bg-gray-400 dark:bg-gray-600;
+  @apply bg-gray-400 dark:bg-slate-600;
 }
 
-/* Scrollbar styles */
 .overflow-y-auto {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 .overflow-y-auto::-webkit-scrollbar {
-  width: 4px;
+  width: 2px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
@@ -143,10 +145,8 @@ input[type='search']::-webkit-search-results-decoration {
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 9999px;
 }
 
-/* Dark mode */
 .dark .overflow-y-auto {
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }

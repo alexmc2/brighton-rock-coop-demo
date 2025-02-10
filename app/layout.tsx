@@ -82,7 +82,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NuqsAdapter>
-            {children}
+            <div className="font-inter antialiased bg-gray-100 dark:bg-slate-900 text-gray-600 dark:text-gray-400 text-base md:text-lg">
+              {children}
+            </div>
             <Analytics />
           </NuqsAdapter>
         </ThemeProvider>
